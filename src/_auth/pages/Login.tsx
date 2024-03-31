@@ -10,9 +10,16 @@ const Login: React.FC = () => {
     // eslint-disable-next-line compat/compat
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
-    if (!code) navigate('/');
+    if (!code) {
+      navigate('/');
+      return;
+    }
+    if (!sessionStorage.getItem('verifier')) {
+      navigate('/');
+      return;
+    }
 
-    handleLogin(code as string)
+    handleLogin(code)
       .then(() => navigate('/terminal'))
       .catch(() => {
         navigate('/');
