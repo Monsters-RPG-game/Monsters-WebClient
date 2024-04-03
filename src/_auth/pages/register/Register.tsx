@@ -7,7 +7,7 @@ import { createAccount } from '../../../communication';
 
 const Register: React.FC = () => {
   const [err, setErr] = useState<string | undefined>(undefined);
-  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   const {
     register,
@@ -21,7 +21,7 @@ const Register: React.FC = () => {
     onError: (error: Error) => setErr(error.message),
     onSuccess: () => {
       reset();
-      setSuccessMessage('Your account has been created')
+      setSuccessMessage('Your account has been created');
     }
   });
 
@@ -95,7 +95,7 @@ const Register: React.FC = () => {
             />
             {errors.password && <span className="text-rose-800  text-xs mt-1 px-2 md:px-0 max-w-[280px] md:max-w[400px] lg:max-w-[390px]  mx-auto  ">{errors.password.message}</span>}
           </label>
-
+          {err && <span className=' text-rose-700 text-center'>      {err}</span>}
         </div>
         {successMessage && <span className='text-violet-800 font-semibold text-base text-center '>{successMessage}</span>}
         <span className="text-slate-400 mx-auto text-base mt-3 mb-1">
@@ -112,8 +112,11 @@ const Register: React.FC = () => {
           >
             Create Account
           </button>
+
         </span>
+
       </form>
+
     </div>
   );
 };

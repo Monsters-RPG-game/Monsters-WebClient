@@ -195,9 +195,20 @@ export const reportBug = async (message: string): Promise<AxiosResponse<types.ID
   }
 };
 
+
+export const setTodeleteAccount = async (): Promise<AxiosResponse> => {
+  try {
+    const response = await getHttpClient().delete('/users/remove');
+    return response;
+  } catch (err) {
+    throw new Error('something went wrong...');
+  }
+};
+
+
 export const deleteAccount = async (password: string): Promise<AxiosResponse> => {
   try {
-    const response = await getHttpClient().delete('/users', password);
+    const response = await getHttpClient().post('/users/remove', password);
     return response;
   } catch (err) {
     throw new Error('something went wrong...');

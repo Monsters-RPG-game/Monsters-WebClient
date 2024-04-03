@@ -3,22 +3,25 @@ import { useForm } from 'react-hook-form';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import { MdVisibility } from 'react-icons/md';
 import type { IDeleteAccountFormProps } from '../../types';
+import { deleteAccount } from '../../communication';
+import { logout } from '../../controllers';
 
 
 
 const DeleteAccountForm: React.FC<IDeleteAccountFormProps> = ({ triggerFn }) => {
 
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-    const {
-        register, handleSubmit, formState: { errors, isValid } } = useForm({
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const {register, handleSubmit, formState: { errors, isValid } } = useForm({
             defaultValues: {
                 password: ''
             },
         });
 
+
+
     const submitHandler = async (data) => {
-        await triggerFn(data)
-    }
+        await triggerFn(deleteAccount(data).then(() => logout()));
+    };
 
 
     return (
@@ -26,14 +29,14 @@ const DeleteAccountForm: React.FC<IDeleteAccountFormProps> = ({ triggerFn }) => 
             <form action="" className='h-full flex flex-col gap-y-6' onSubmit={handleSubmit(submitHandler)} >
                 <div className='relative w-full'>
                     <input
-                        {...register("password", {
+                        {...register('password', {
                             minLength: {
                                 value: 8,
-                                message: "Password is too short."
+                                message: 'Password is too short.'
                             },
                             required: {
                                 value: true,
-                                message: "Password is required"
+                                message: 'Password is required'
                             }
                         })}
                         type={isPasswordVisible ? 'text' : 'password'}
@@ -66,7 +69,7 @@ const DeleteAccountForm: React.FC<IDeleteAccountFormProps> = ({ triggerFn }) => 
 
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default DeleteAccountForm;

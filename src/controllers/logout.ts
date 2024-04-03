@@ -16,7 +16,7 @@ export const removeTokens = async (): Promise<string> => {
   return accessToken as string;
 };
 
-// eslint-disable-next-line import/prefer-default-export
+
 export const logout = (): void => {
   removeTokens()
     .then((accessToken) => {
