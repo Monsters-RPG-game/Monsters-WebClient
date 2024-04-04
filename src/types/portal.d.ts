@@ -10,5 +10,6 @@ export type IPortalProps = {
   className?: string;
   triggerFn: () => void;
   handleClose: () => void;
+  setTodeleteAccountHandler: () => void;
 
 };

@@ -3,6 +3,7 @@ import getHttpClient from '../tools/axios';
 import type { ETokenType, EUserRace } from '../enums';
 import type * as types from '../types';
 import { generateRandomName } from '../tools';
+import { generateCodeChallengeFromVerifier, generateCodeVerifier } from '../tools/crypto';
 
 export const sendMessage = async (receiver: string, body: string): Promise<AxiosResponse<types.IDefaultResponse>> => {
   try {
@@ -57,10 +58,14 @@ export const getActiveFight = async (): Promise<AxiosResponse<types.IGetActiveFi
   }
 };
 
-export const sendToLoginPage = (): void => {
+export const sendToLoginPage = async (): Promise<void> => {
   const redirectUrl = import.meta.env.VITE_API_REDIRECT_LOGIN_URL as string;
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
   const server = import.meta.env.VITE_API_BACKEND as string;
+  const verifier = generateCodeVerifier();
+  const challenge = await generateCodeChallengeFromVerifier(verifier);
+  sessionStorage.setItem('verifier', verifier);
+
   // eslint-disable-next-line compat/compat
   const queryParams = new URLSearchParams({
     client_id: clientId,
@@ -68,6 +73,8 @@ export const sendToLoginPage = (): void => {
     redirect_uri: redirectUrl,
     nonce: generateRandomName(),
     scope: 'openid',
+    code_challenge_method: 'S256',
+    code_challenge: challenge,
   }).toString();
   window.location.href = `${server}/auth?${queryParams}`;
 };
@@ -125,6 +132,8 @@ export const login = async (code: string): Promise<AxiosResponse<types.IGetToken
   const redirectUrl = import.meta.env.VITE_API_REDIRECT_LOGIN_URL as string;
   const clientSecret = import.meta.env.VITE_API_CLIENT_SECRET as string;
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
+  const verifier = sessionStorage.getItem('verifier') as string;
+  sessionStorage.removeItem('verifier');
 
   // eslint-disable-next-line compat/compat
   const body = new URLSearchParams({
@@ -133,29 +142,11 @@ export const login = async (code: string): Promise<AxiosResponse<types.IGetToken
     code,
     grant_type: 'authorization_code',
     redirect_uri: redirectUrl,
+    code_verifier: verifier,
   });
 
   try {
-    return await getHttpClient().post('/token', body);
-  } catch (err) {
-    throw new Error((err as AxiosError<{ error: Error }>).response!.data.error.message);
-  }
-};
-
-export const refreshAccessToken = async (token: string): Promise<AxiosResponse<types.IDefaultResponse>> => {
-  const clientSecret = import.meta.env.VITE_API_CLIENT_SECRET as string;
-  const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
-
-  // eslint-disable-next-line compat/compat
-  const body = new URLSearchParams({
-    client_id: clientId,
-    client_secret: clientSecret,
-    refresh_token: token,
-    grant_type: 'refresh_token',
-  });
-
-  try {
-    return await getHttpClient().post('/token', body);
+    return await getHttpClient({ noToken: true }).post('/token', body);
   } catch (err) {
     throw new Error((err as AxiosError<{ error: Error }>).response!.data.error.message);
   }
@@ -205,10 +196,19 @@ export const reportBug = async (message: string): Promise<AxiosResponse<types.ID
 };
 
 
-export const deleteAccount = async (password: string): Promise<AxiosResponse> => {
-
+export const setTodeleteAccount = async (): Promise<AxiosResponse> => {
   try {
-    const response = await getHttpClient().delete('/users', password);
+    const response = await getHttpClient().delete('/users/remove');
+    return response;
+  } catch (err) {
+    throw new Error('something went wrong...');
+  }
+};
+
+
+export const deleteAccount = async (password: string): Promise<AxiosResponse> => {
+  try {
+    const response = await getHttpClient().post('/users/remove', password);
     return response;
   } catch (err) {
     throw new Error('something went wrong...');

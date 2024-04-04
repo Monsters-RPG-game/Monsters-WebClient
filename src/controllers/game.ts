@@ -1,9 +1,9 @@
 import nlp from 'compromise';
+import type { AxiosResponse } from 'axios';
 import { ECharacterState, EShowOptions, EUserActions, EUserRace } from '../enums';
 import { handleAttackEnemy, show as showFn } from './responses';
 import type { IAvailableCommands, IFightEntity, IFightTeam, IUserProfile, IDefaultResponse } from '../types';
 import { createFight, getActiveFight, initProfile, leaveFight, saveLog, sendMessage } from '../communication';
-import type { AxiosResponse } from 'axios';
 
 const baseCommands: IAvailableCommands[] = [
   { action: EUserActions.Attack, target: ['enemy'] },
@@ -181,6 +181,7 @@ export const newUserCommand = async (
     add('System', "Incorrect or not allowed command. Type 'help' to see all available commands");
     return;
   }
+  // #todo check if command exist on available command list
   await saveLog('', command);
 
   switch (action) {
@@ -247,7 +248,7 @@ export const newUserCommand = async (
         renderAvailableRaces(add);
       } else {
         const data = await chooseRace(prepared[2], add);
-        addProfile({ ...profile, ...data.data.state })
+        addProfile({ ...profile, ...data.data.state });
       }
       break;
     case EUserActions.Show:
