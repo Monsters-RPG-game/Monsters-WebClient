@@ -31,7 +31,11 @@ export const initApp = async (
   profile: IUserProfile,
   addFight: (data: IFightEntity) => void,
 ): Promise<ILog[]> => {
-  const messages = await getMessages();
+  if (profile?.initialized) {
+    const messages = await getMessages();
+    addMessages(messages.data.data);
+  }
+
   const logs = await getLogs();
 
   if (profile.state === ECharacterState.Fight) {
@@ -39,7 +43,7 @@ export const initApp = async (
     addFight(fight.data.data[0]);
   }
 
-  addMessages(messages.data.data);
+
   addLogs(logs.data.data);
   return logs.data.data;
 };

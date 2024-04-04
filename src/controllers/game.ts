@@ -46,7 +46,10 @@ const getAvailableCommands = (
       (c) =>
         (c.action as EUserActions) === EUserActions.Choose ||
         (c.action as EUserActions) === EUserActions.Help ||
-        (c.action as EUserActions) === EUserActions.Clear,
+        (c.action as EUserActions) === EUserActions.Clear ||
+        (c.action as EShowOptions) === EShowOptions.Races ||
+        (c.action as EShowOptions) === EShowOptions.Players ||
+        (c.action as EShowOptions) === EShowOptions.Profile,
     );
   }
 
