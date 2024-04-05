@@ -79,14 +79,13 @@ export const sendToLoginPage = async (): Promise<void> => {
   window.location.href = `${server}/auth?${queryParams}`;
 };
 
-export const sendToLogoutPage = (token: string): void => {
+export const sendToLogoutPage = (): void => {
   const redirectUrl = import.meta.env.VITE_API_HOME as string;
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
   const server = import.meta.env.VITE_API_BACKEND as string;
 
   // eslint-disable-next-line compat/compat
   const params = new URLSearchParams({
-    id_token_hint: token,
     post_logout_redirect_uri: redirectUrl,
     client_id: clientId,
   }).toString();
