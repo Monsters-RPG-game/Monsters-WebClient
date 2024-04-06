@@ -13,11 +13,19 @@ const Register: React.FC = () => {
     register,
     reset,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<IRegisterFormValues>();
+  } = useForm<IRegisterFormValues>({
+    defaultValues: {
+      login: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
+  });
 
   const mutation = useMutation(createAccount, {
-    // onSuccess: (data) => console.log(data.data),
+
     onError: (error: Error) => setErr(error.message),
     onSuccess: () => {
       reset();
@@ -26,7 +34,10 @@ const Register: React.FC = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data);
+    const { login, email, password } = data;
+    mutation.mutate({ login, email, password });
+
+
   });
 
 
@@ -94,6 +105,23 @@ const Register: React.FC = () => {
               })}
             />
             {errors.password && <span className="text-rose-800  text-xs mt-1 px-2 md:px-0 max-w-[280px] md:max-w[400px] lg:max-w-[390px]  mx-auto  ">{errors.password.message}</span>}
+          </label>
+          <label className="text-gray-700 text-sm font-bold flex-1 flex flex-col gap-1 ">
+            Confirm Password
+            <input
+              placeholder='confirm password'
+              type="password"
+              className="border rounded w-full py-2 px-2 font-normal bg-dark-4 outline-none border-none focus:ring focus:ring-violet-800 text-slate-200 placeholder:text-xs"
+              {...register('confirmPassword', {
+                validate: (value) => {
+                  const password = watch('password');
+                  if (value !== password) {
+                    return 'Passwords do not match'
+                  }
+                }
+              })}
+            />
+            {errors.confirmPassword && <span className="text-rose-800  text-xs mt-1 px-2 md:px-0 max-w-[280px] md:max-w[400px] lg:max-w-[390px]  mx-auto  ">{errors.confirmPassword.message}</span>}
           </label>
           {err && <span className=' text-rose-700 text-center'>      {err}</span>}
         </div>
