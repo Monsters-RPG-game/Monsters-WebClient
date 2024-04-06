@@ -44,6 +44,7 @@ const LandingPage: React.FC = () => {
         </Link>
       </div>
       <Portal
+        className='bg-dark-2 border border-dark-4'
         handleClose={() => setIsPrivacyPopupVisible((prevState) => !prevState)}
         confirmButtonLabel="Accept"
         isPortalOpen={isPrivacyPopupVisible}
@@ -52,7 +53,7 @@ const LandingPage: React.FC = () => {
           setIsPrivacyPopupVisible(false);
         }}
       >
-        <div className="flex flex-col justify-evenly items-center h-full px-20 ">
+        <div className="flex flex-col justify-evenly items-center h-full px-20">
           <PiCookieDuotone color="white" size="118" />
           <h2 className="text-slate-500 text-3xl font-bold tracking-tight ">WE USE COOKIES</h2>
           <p className="text-slate-200 text-base leading-7">
