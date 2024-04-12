@@ -1,4 +1,3 @@
 export type IDeleteAccountFormProps = {
-    triggerFn: () => Promise<void>;
-
-}
+  exit: () => Promise<void> | void;
+};

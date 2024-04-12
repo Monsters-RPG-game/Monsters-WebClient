@@ -7,7 +7,18 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --fix --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lintStaged": "npx lint-staged",
+    "listErrors": "node_modules/.bin/tsc --skipLibCheck",
+    "listErrors:watch": "node_modules/.bin/tsc --skipLibCheck --watch",
     "preview": "vite preview"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "cross-env NODE_ENV=development eslint --cache"
+    ],
+    "*.json,.{eslintrc,prettierrc}": [
+      "prettier --ignore-path .eslintignore --parser json --write"
+    ]
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.5",

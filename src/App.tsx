@@ -36,7 +36,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <main className="bg-[#010B00] h-screen dark:bg-white ">
+    <main className="bg-[#010B00] h-screen dark:bg-white">
       <Router>
         <Routes>
           <Route element={isAuthRdy ? <AuthLayout /> : <AuthLoader />}>

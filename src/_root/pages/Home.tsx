@@ -16,8 +16,6 @@ const Home: React.FC<{
   const addFight = useFightsStore((state) => state.addCurrentFight);
 
   useEffect(() => {
-
-
     initApp(addMessages, addLogs, profile, addFight)
       .then((logs) => {
         const preparedLogs =
@@ -31,10 +29,10 @@ const Home: React.FC<{
       .catch((err) => {
         console.log('Cannot init app', err);
       });
-  },[]);
+  }, []);
 
   return (
-    <div className="h-full w-full flex justify-center ">
+    <div className="h-full w-full flex justify-center">
       <WebSocket />
       <Terminal
         profile={profile}

@@ -47,9 +47,9 @@ module.exports = {
     },
   },
   rules: {
-     'react/jsx-props-no-spreading': 'off',
-    "react-refresh/only-export-components": [
-      "warn",
+    'react/jsx-props-no-spreading': 'off',
+    'react-refresh/only-export-components': [
+      'warn',
       { allowConstantExport: true },
     ],
     'class-methods-use-this': 0,
@@ -69,6 +69,7 @@ module.exports = {
     'import/prefer-default-export': 2,
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/label-has-associated-control': 0,
     'jsx-a11y/no-static-element-interactions': 0,
     'max-classes-per-file': 2,
     'no-await-in-loop': 2,
