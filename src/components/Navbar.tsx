@@ -8,20 +8,20 @@ const Navbar: React.FC = () => {
   const user = false;
 
   return (
-    <nav className=" flex flex-col items-center h-[55px]">
+    <nav className="flex flex-col items-center h-[55px]">
       <div className="w-[95%] flex justify-between h-full items-center">
         <span className="text-slate-300 font-bold text-base lg:text-xl">Monsters</span>
         {user && (
-          <div className="flex items-center gap-6 ">
+          <div className="flex items-center gap-6">
             <Link to="/login">
-              <span className="text-slate-300 ">
+              <span className="text-slate-300">
                 <Button className="text-base" variant="ghost">
                   Login
                 </Button>
               </span>
             </Link>
             <Link to="/register">
-              <span className="text-slate-300 ">
+              <span className="text-slate-300">
                 <Button className="text-base" variant="ghost">
                   Join
                 </Button>
@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
         {!user && (
           <div>
             <Link to="/register">
-              <span className="text-slate-300 ">
+              <span className="text-slate-300">
                 <Button className="text-base" variant="ghost" onClick={logout}>
                   <IoLogOutOutline className="mr-1" size={22} />
                   Logout

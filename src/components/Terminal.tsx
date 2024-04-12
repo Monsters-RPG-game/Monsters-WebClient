@@ -2,20 +2,23 @@ import '../style/terminal.css';
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { IoSettings } from 'react-icons/io5';
 import type { TerminalProps } from '../types';
-import { logout, newUserCommand } from '../controllers';
+import { newUserCommand } from '../controllers';
 import { useAccountStore, useFightsStore, useHistoryStore } from '../zustand/store';
-import Portal from './Portal';
 import { Button } from './ui/button';
 import ReportBugForm from './forms/ReportBugForm';
 import { initMessage, uninitializedProfile } from '../controllers/responses';
-import { deleteAccount, reportBug, setTodeleteAccount } from '../communication';
+import { deleteAccount as sendDeleteAccount, reportBug } from '../communication';
 import UserAccountForm from './forms/UserAccountForm';
+import Portal2 from './Portal';
+import * as dialogs from './ui/alert-dialog';
+import DeleteAccountForm from './forms/DeleteAccountForm';
 
 const Terminal = forwardRef((props: TerminalProps) => {
   const inputRef = useRef<HTMLInputElement>();
   const [isReportFormOpen, setIsReportFormOpen] = useState(false);
   const [isSettingsFormOpen, setIsSettingsFormOpen] = useState(false);
-
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteAccountError, setDeleteAccountError] = useState<string | undefined>(undefined);
 
   const [input, setInputValue] = useState<string>('');
   const [terminalRef, setDomNode] = useState<HTMLDivElement>();
@@ -100,18 +103,17 @@ const Terminal = forwardRef((props: TerminalProps) => {
 
   const [bugReport, setBugReport] = useState<string>('');
 
-  const deleteAccountHandler = (cb) => {
-    cb();
-
+  const deleteAccount = (): void => {
+    sendDeleteAccount()
+      .then(() => setConfirmDelete(true))
+      .catch((err) => {
+        setDeleteAccountError((err as Error).message);
+      });
   };
 
-
-
   return (
-    <div className="terminal  " ref={setTerminalRef} onClick={focusInput}>
+    <div className="terminal" ref={setTerminalRef} onClick={focusInput}>
       {history.map((c, index) => {
-        // const action = Commands[target as keyof typeof Commands];
-
         if (c.target !== undefined && c.target !== '') {
           return (
             <div className="terminal__line" key={`terminal-line-${index}-${c.message}`}>
@@ -144,40 +146,92 @@ const Terminal = forwardRef((props: TerminalProps) => {
       </div>
 
       <div className="fixed top-2 right-[170px] flex gap-x-6">
-        <Portal
-          className="min-w-[270px]  bg-dark-2 border-dark-4 md:min-w-[700px] lg:min-w-[900px] h-[500px]  flex flex-col justify-between gap-8  "
-          handleClose={() => setIsReportFormOpen(prevSate => !prevSate)}
-          confirmButtonLabel='Submit'
-          cancelButtonLabel='Cancel'
-          openButton={<Button className="bg-rose-900 hover:bg-rose-800 font-semibold" onClick={() => setIsReportFormOpen(true)} >Report Bug</Button>}
-          isPortalOpen={isReportFormOpen}
-          triggerFn={() => {
-            reportBug(bugReport)
-              .then(() => add('System', 'Bug reported'))
-              .then(() => setIsReportFormOpen(false))
-              .catch(() => add('System', "Couldn't send bug report"));
+        <Portal2
+          canExit
+          handleClose={() => {
+            setIsSettingsFormOpen(false);
+            setConfirmDelete(false);
           }}
+          openButton={
+            <Button className="bg-rose-900 hover:bg-rose-800 font-semibold" onClick={() => setIsReportFormOpen(true)}>
+              Report Bug
+            </Button>
+          }
+          className="min-w-[270px] bg-dark-2 border-dark-4 md:min-w-[700px] lg:min-w-[900px] h-[500px] flex flex-col justify-between gap-8"
+          isPortalOpen={isReportFormOpen}
         >
-          <ReportBugForm setBugReport={setBugReport} />
-        </Portal>
-        <Portal
-          className="min-w-[250px]  bg-dark-2 border-dark-4 md:min-w-[350px] lg:min-w-[400px] h-[380px]  flex flex-col justify-between gap-8  "
-          isPortalOpen={isSettingsFormOpen}
-          openButton={<IoSettings className='mr-4 w-6 h-auto' onClick={() => setIsSettingsFormOpen(true)} />}
-          deleteAccountHandler={deleteAccountHandler}
+          {confirmDelete ? (
+            <DeleteAccountForm
+              exit={() => {
+                setIsSettingsFormOpen(false);
+                setConfirmDelete(false);
+              }}
+            />
+          ) : (
+            <>
+              <div className="h-[100%] relative">
+                <ReportBugForm setBugReport={setBugReport} />
+              </div>
 
-          cancelButtonLabel='Cancel'
-          deleteButtonLabel="Delete account"
-          handleClose={() => setIsSettingsFormOpen(prevState => !prevState)}
-          triggerFn={(cb) => {
-            cb();
-          }
-          }
+              <div className="flex flex-col-reverse gap-2 mt-3 md:flex-row">
+                <div className="flex flex-col w-3/4 mx-auto md:flex-row md:justify-end">
+                  <dialogs.AlertDialogAction
+                    className="bg-violet-800 hover:bg-violet-700"
+                    onClick={() => {
+                      reportBug(bugReport)
+                        .then(() => add('System', 'Bug reported. Thank you :)'))
+                        .then(() => setIsReportFormOpen(false))
+                        .catch(() => add('System', "Couldn't send bug report"));
+                    }}
+                  >
+                    Submit
+                  </dialogs.AlertDialogAction>
+                </div>
+              </div>
+            </>
+          )}
+        </Portal2>
+        <Portal2
+          canExit
+          handleClose={() => {
+            setIsSettingsFormOpen(false);
+            setConfirmDelete(false);
+          }}
+          openButton={<IoSettings className="mr-4 w-6 h-auto" onClick={() => setIsSettingsFormOpen(true)} />}
+          className="min-w-[250px]  bg-dark-2 border-dark-4 md:min-w-[350px] lg:min-w-[400px] h-[380px]  flex flex-col justify-between gap-8"
+          isPortalOpen={isSettingsFormOpen}
         >
-          <UserAccountForm userData={{ login: account.login, race: profile.race, lvl: profile.lvl }} />
-        </Portal>
+          {confirmDelete ? (
+            <DeleteAccountForm
+              exit={() => {
+                setIsSettingsFormOpen(false);
+                setConfirmDelete(false);
+              }}
+            />
+          ) : (
+            <>
+              <div className="h-[100%] relative">
+                <UserAccountForm login={account.login} race={profile.race} lvl={profile.lvl} />
+                {deleteAccountError ? <h3>{deleteAccountError}</h3> : null}
+              </div>
+
+              <div className="flex flex-col-reverse gap-2 mt-3 md:flex-row">
+                <div className="flex flex-col w-3/4 mx-auto md:flex-row md:justify-end">
+                  <dialogs.AlertDialogAction
+                    className="bg-violet-800 hover:bg-violet-700"
+                    onClick={() => {
+                      deleteAccount();
+                    }}
+                  >
+                    Delete account
+                  </dialogs.AlertDialogAction>
+                </div>
+              </div>
+            </>
+          )}
+        </Portal2>
       </div>
-    </div >
+    </div>
   );
 });
 

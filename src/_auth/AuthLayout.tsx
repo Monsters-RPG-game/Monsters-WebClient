@@ -6,7 +6,7 @@ const AuthLayout: React.FC = () => {
   const { isLoggedIn } = useAccountStore.getState();
 
   return (
-    <div className=" h-full w-full flex overflow-hidden ">
+    <div className="h-full w-full flex overflow-hidden">
       {!isLoggedIn ? (
         <section className="flex-1 h-full overflow-y-scroll custom-scrollbar">
           <Outlet />

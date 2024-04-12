@@ -2,7 +2,7 @@ import nlp from 'compromise';
 import type { AxiosResponse } from 'axios';
 import { ECharacterState, EShowOptions, EUserActions, EUserRace } from '../enums';
 import { handleAttackEnemy, show as showFn } from './responses';
-import type { IAvailableCommands, IFightEntity, IFightTeam, IUserProfile, IDefaultResponse } from '../types';
+import type { IAvailableCommands, IDefaultResponse, IFightEntity, IFightTeam, IUserProfile } from '../types';
 import { createFight, getActiveFight, initProfile, leaveFight, saveLog, sendMessage } from '../communication';
 
 const baseCommands: IAvailableCommands[] = [
@@ -21,7 +21,7 @@ const baseCommands: IAvailableCommands[] = [
     action: EUserActions.Create.toLocaleLowerCase(),
     target: ['fight'],
     secondTarget: ['against'],
-    thirdTarget: ['username', ('test enemy is bandit')],
+    thirdTarget: ['username', 'test enemy is bandit'],
   },
   { action: EUserActions.Clear.toLocaleLowerCase() },
   { action: EUserActions.Exit.toLocaleLowerCase() },
@@ -63,24 +63,27 @@ const getAvailableCommands = (
     default:
       return fight
         ? baseCommands
-          .filter((c) => (c.action as EUserActions) !== EUserActions.Choose)
-          .map((a) => {
-            if ((a.action as EUserActions) !== EUserActions.Attack) return a;
-            let enemyTeam: IFightTeam[] | undefined;
+            .filter((c) => (c.action as EUserActions) !== EUserActions.Choose)
+            .map((a) => {
+              if ((a.action as EUserActions) !== EUserActions.Attack) return a;
+              let enemyTeam: IFightTeam[] | undefined;
 
-            fight.states.current.teams.forEach((t) => {
-              if (!t.find((team) => team.character === userName)) {
-                enemyTeam = t;
-              }
-            });
+              fight.states.current.teams.forEach((t) => {
+                if (!t.find((team) => team.character === userName)) {
+                  enemyTeam = t;
+                }
+              });
 
-            return { ...a, target: enemyTeam ? enemyTeam.map((e) => e.character) : [] };
-          })
+              return { ...a, target: enemyTeam ? enemyTeam.map((e) => e.character) : [] };
+            })
         : baseCommands.filter((c) => (c.action as EUserActions) !== EUserActions.Choose);
   }
 };
 
-const chooseRace = async (race: string, add: (target: string, output: string) => void): Promise<AxiosResponse<IDefaultResponse, any>> => {
+const chooseRace = async (
+  race: string,
+  add: (target: string, output: string) => void,
+): Promise<AxiosResponse<IDefaultResponse, any>> => {
   const callback = await initProfile(race as EUserRace);
   add(
     'Jessica [NPC]',
