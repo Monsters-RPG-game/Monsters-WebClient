@@ -14,6 +14,9 @@ import Login from './_auth/pages/Login';
 import { useAccountStore, useProfileStore } from './zustand/store';
 import { ETokenNames } from './enums';
 import type { IUser, IUserProfile } from './types';
+import Races from './_auth/pages/Races';
+import Classes from './_auth/pages/Classes';
+import CreditstSection from './_auth/pages/CreditstSection';
 
 const App: React.FC = () => {
   const [isRootRdy, setIsRootRdy] = useState(false);
@@ -36,13 +39,15 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <main className="bg-[#010B00] h-screen dark:bg-white ">
+    <main className=" h-screen dark:bg-white ">
       <Router>
         <Routes>
           <Route element={isAuthRdy ? <AuthLayout /> : <AuthLoader />}>
             <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/races" element={<Races />} />
+            <Route path="/classes" element={<Classes />} />
+            <Route path="/credits" element={<CreditstSection />} />
           </Route>
 
           <Route element={isRootRdy ? <RootLayout /> : <RootLoader />}>
