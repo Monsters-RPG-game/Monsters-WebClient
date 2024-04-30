@@ -32,7 +32,7 @@ const Home: React.FC<{
   }, []);
 
   return (
-    <div className="h-full w-full flex justify-center">
+    <div className="h-full w-full flex justify-center ">
       <WebSocket />
       <Terminal
         profile={profile}

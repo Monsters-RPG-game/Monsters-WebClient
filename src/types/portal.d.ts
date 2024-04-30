@@ -1,10 +1,14 @@
 import type { ReactNode } from 'react';
 
 export type IPortalProps = {
-  canExit?: boolean;
   children: ReactNode;
-  className?: string;
-  handleClose: () => void;
+  openButton: ReactNode;
+  confirmButtonLabel: string;
+  cancelButtonLabel: string;
+  deleteButtonLabel: string;
   isPortalOpen: boolean;
-  openButton?: ReactNode;
+  className?: string;
+  triggerFn: () => void;
+  handleClose: () => void;
+  setTodeleteAccountHandler: () => void;
 };

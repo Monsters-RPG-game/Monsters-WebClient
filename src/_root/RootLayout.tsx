@@ -6,7 +6,7 @@ const RootLayout: React.FC = () => {
   const isLoggedIn = useAccountStore((state) => state.isLoggedIn);
 
   return (
-    <div className="h-screen w-full">
+    <div className=" h-screen w-full ">
       <Navbar />
       {isLoggedIn ? (
         <section>

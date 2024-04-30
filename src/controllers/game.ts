@@ -83,7 +83,7 @@ const getAvailableCommands = (
 const chooseRace = async (
   race: string,
   add: (target: string, output: string) => void,
-): Promise<AxiosResponse<IDefaultResponse, any>> => {
+): Promise<AxiosResponse<IDefaultResponse, unknown>> => {
   const callback = await initProfile(race as EUserRace);
   add(
     'Jessica [NPC]',

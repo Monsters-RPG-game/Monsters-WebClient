@@ -43,7 +43,6 @@ export const initApp = async (
     addFight(fight.data.data[0]);
   }
 
-
   addLogs(logs.data.data);
   return logs.data.data;
 };
