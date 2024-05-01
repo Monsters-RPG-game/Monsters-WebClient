@@ -6,8 +6,8 @@ import type { IRegisterFormValues } from '../../../types';
 import { createAccount } from '../../../communication';
 
 const Register: React.FC = () => {
-  const [err, setErr] = useState<string | undefined>(undefined);
-  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [err, setErr] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -25,7 +25,9 @@ const Register: React.FC = () => {
   });
 
   const mutation = useMutation(createAccount, {
-    onError: (error: Error) => setErr(error.message),
+    onError: (error: Error) => {
+      setErr(error?.response?.data?.error?.message);
+    },
     onSuccess: () => {
       reset();
       setSuccessMessage('Your account has been created');
@@ -52,7 +54,7 @@ const Register: React.FC = () => {
   return (
     <div
       className="flex bg-gradient-to-r from-gray-300 via-gray-200 to-gray-100 flex-col justify-center items-center min-h-[100%] flex-1 pb-5"
-      onClick={() => setErr(undefined)}
+      onClick={() => setErr(null)}
     >
       <Link to="/">
         <h2 className="text-7xl text-slate-700 md:text-8xl font-bold mb-10 font-navbarFotn ">
@@ -64,9 +66,13 @@ const Register: React.FC = () => {
 
       <form className="flex   flex-col  gap-5 mt-8" onSubmit={onSubmit}>
         <div className="flex flex-col md:flex-row gap-5 px-4  ">
-          <label className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 min-w-[280px] md:min-w-[420px] lg:min-w-[390px] ">
+          <label
+            htmlFor="username"
+            className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 min-w-[280px] md:min-w-[420px] lg:min-w-[390px] "
+          >
             User Name
             <input
+              id="username"
               placeholder="user name"
               type="text"
               className=" border rounded w-full py-3 px-2 font-normal bg-slate-300 outline-none border-none focus:ring focus:ring-blue-300 text-gray-700 placeholder:text-xs"
@@ -80,9 +86,10 @@ const Register: React.FC = () => {
           </label>
         </div>
         <div className="flex flex-col  gap-5 px-4 ">
-          <label className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 ">
+          <label htmlFor="email" className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 ">
             Email
             <input
+              id="email"
               placeholder="email"
               type="email"
               className="border rounded w-full py-3 px-2 font-normal bg-slate-300 outline-none border-none focus:ring focus:ring-blue-300 text-gray-700 placeholder:text-xs"
@@ -90,9 +97,10 @@ const Register: React.FC = () => {
             />
             {errors.email && <span className="text-rose-600  text-xs mt-1 px-2 md:px-0">{errors.email.message}</span>}
           </label>
-          <label className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 ">
+          <label htmlFor="password" className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 ">
             Password
             <input
+              id="password"
               placeholder="password"
               type="password"
               className="border rounded w-full py-3 px-2 font-normal bg-slate-300 outline-none border-none focus:ring focus:ring-blue-300 text-gray-700 placeholder:text-xs"
@@ -108,9 +116,10 @@ const Register: React.FC = () => {
               </span>
             )}
           </label>
-          <label className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 ">
+          <label htmlFor="confirmPassword" className="text-gray-500 text-sm font-bold flex-1 flex flex-col gap-1 ">
             Confirm Password
             <input
+              id="confirmPassword"
               placeholder="confirm password"
               type="password"
               className="border rounded w-full py-3 px-2 font-normal bg-slate-300 outline-none border-none focus:ring focus:ring-blue-300 text-gray-700 placeholder:text-xs"
@@ -120,6 +129,7 @@ const Register: React.FC = () => {
                   if (value !== password) {
                     return 'Passwords do not match';
                   }
+                  return true;
                 },
               })}
             />

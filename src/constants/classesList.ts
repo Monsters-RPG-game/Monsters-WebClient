@@ -1,7 +1,7 @@
-import WizzardImage from '../assets/images/classImage.png';
-import WarriorImage from '../assets/images/warriorImage.png';
-import ArcherImage from '../assets/images/archerImage.png';
-import RougeImage from '../assets/images/rogueImage.png';
+import WizzardImage from '../../public/images/classImage.png';
+import WarriorImage from '../../public/images/warriorImage.png';
+import ArcherImage from '../../public/images/archerImage.png';
+import RougeImage from '../../public/images/rogueImage.png';
 
 const ClassesList = [
   {

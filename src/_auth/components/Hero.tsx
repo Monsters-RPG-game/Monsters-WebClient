@@ -14,6 +14,7 @@ const Hero: React.FC = () => {
           <span className="text-xl md:text-2xl   mt-6 text-slate-300">Begin your journey now!</span>
           <div className="flex gap-x-10 mt-7">
             <button
+              type="button"
               className="border py-3 px-3.5 rounded font-semibold flex items-center gap-1 hover:bg-slate-100 hover:text-slate-800  "
               onClick={(e) => {
                 e.preventDefault();
@@ -24,11 +25,13 @@ const Hero: React.FC = () => {
             >
               Play now <FaArrowRight />
             </button>
-            <button className="border py-3 px-3.5 rounded  ">Read more</button>
+            <button type="button" className="border py-3 px-3.5 rounded  ">
+              Read more
+            </button>
           </div>
         </div>
         <div className="flex-1 my-auto pt-2 hidden lg:block">
-          <img src={images.HeroImage4} alt="hero image" className="w-auto h-auto" />
+          <img src={images.HeroImage4} alt="hero img" className="w-auto h-auto" />
         </div>
       </div>
     </section>

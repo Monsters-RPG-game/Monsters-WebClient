@@ -29,7 +29,7 @@ const Home: React.FC<{
       .catch((err) => {
         console.log('Cannot init app', err);
       });
-  }, []);
+  }, [addLogs, addFight, initHistory, addMessages, profile]);
 
   return (
     <div className="h-full w-full flex justify-center ">

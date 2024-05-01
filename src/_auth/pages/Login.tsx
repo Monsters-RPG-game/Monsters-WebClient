@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       .catch(() => {
         navigate('/');
       });
-  }, []);
+  }, [navigate]);
   return <AuthLoader />;
 };
 

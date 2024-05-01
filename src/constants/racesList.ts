@@ -1,9 +1,9 @@
-import HumanImage from '../assets/images/humanImage.png';
-import GoblinImage from '../assets/images/goblinImage.png';
-import DwarfImage from '../assets/images/dwarfImage.png';
-import FairyImage from '../assets/images/fairyImage.png';
-import ElfImage from '../assets/images/elfImage.png';
-import OrcImage from '../assets/images/orcImage.png';
+import HumanImage from '../../public/images/humanImage.png';
+import GoblinImage from '../../public/images/goblinImage.png';
+import DwarfImage from '../../public/images/dwarfImage.png';
+import FairyImage from '../../public/images/fairyImage.png';
+import ElfImage from '../../public/images/elfImage.png';
+import OrcImage from '../../public/images/orcImage.png';
 
 const RacesList = [
   {

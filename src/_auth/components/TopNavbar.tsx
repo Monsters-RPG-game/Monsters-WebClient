@@ -8,8 +8,6 @@ const TopNavbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { pathname } = useLocation();
 
-  console.log(pathname);
-
   const mobileMenuHandler = (): void => {
     setIsMobileMenuOpen((prev) => !prev);
   };
@@ -21,14 +19,15 @@ const TopNavbar: React.FC = () => {
       </button>
       <div className="hidden lg:flex max-w-7xl  justify-between mx-auto">
         <h1 className="text-2xl text-slate-900 font-navbarFont font-bold">
-          <span className="text-blue-900 font-extrabold">M</span>onsters
+          <Link to="/">
+            <span className="text-blue-900 font-extrabold">M</span>onsters
+          </Link>
         </h1>
         <div className="flex items-center gap-10">
           <ul className="flex gap-10">
             {navbarLinks.map(({ label, link }, index) => {
               const isActive = pathname === link;
 
-              console.log(isActive);
               if (link.startsWith('http')) {
                 return (
                   <a rel="noreferrer" target="_blank" href={link} key={index}>

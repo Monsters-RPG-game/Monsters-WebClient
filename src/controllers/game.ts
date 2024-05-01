@@ -168,7 +168,7 @@ const formatInput = (
   return preparedInput as [EUserActions, ...string[]];
 };
 
-// eslint-disable-next-line import/prefer-default-export
+
 export const newUserCommand = async (
   command: string,
   username: string,

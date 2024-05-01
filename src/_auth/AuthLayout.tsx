@@ -5,6 +5,8 @@ import TopNavbar from './components/TopNavbar';
 
 const AuthLayout: React.FC = () => {
   const { isLoggedIn } = useAccountStore.getState();
+  console.log('isLoggedIn');
+  console.log(isLoggedIn);
 
   return (
     <div className=" h-full w-full mx-auto flex flex-col overflow-hidden bg-slate-100">
