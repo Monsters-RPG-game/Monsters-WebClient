@@ -17,6 +17,9 @@ import Races from './_auth/pages/Races';
 import Classes from './_auth/pages/Classes';
 import CreditstSection from './_auth/pages/CreditstSection';
 import Login from './_auth/pages/Login';
+import ProfileInitializePage from './_root/pages/InitializeProfileLayout';
+import SelectRacePage from './_root/pages/SelectRacePage';
+import InitializeProfileLayout from './_root/pages/InitializeProfileLayout';
 
 const App: React.FC = () => {
   const [isRootRdy, setIsRootRdy] = useState(false);
@@ -56,6 +59,9 @@ const App: React.FC = () => {
               path="/*"
               element={<Home account={account as IUser} profile={profile as IUserProfile} addProfile={addProfile} />}
             />
+          </Route>
+          <Route element={<InitializeProfileLayout />}>
+            <Route path="profile-initialize" element={<SelectRacePage />} />
           </Route>
         </Routes>
       </Router>
