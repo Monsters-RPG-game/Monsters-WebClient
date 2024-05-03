@@ -2,7 +2,9 @@ import React from 'react';
 import { IoSettings } from 'react-icons/io5';
 import type { EUserRace } from '../../enums';
 
-const UserAccountForm: React.FC<{ login: string; race: EUserRace; lvl: number }> = ({ login, race, lvl }) => {
+const UserAccountForm: React.FC<{ userData: { login: string; race: EUserRace; lvl: number } }> = ({
+  userData: { login, race, lvl },
+}) => {
   console.log(login);
   console.log(race);
   console.log(lvl);

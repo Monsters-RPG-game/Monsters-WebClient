@@ -23,13 +23,7 @@ module.exports = {
     'prettier',
     'plugin:react-hooks/recommended',
   ],
-  plugins: [
-    '@typescript-eslint',
-    'eslint-plugin-prettier',
-    'react',
-    'jsx-a11y',
-    'react-refresh',
-  ],
+  plugins: ['@typescript-eslint', 'eslint-plugin-prettier', 'react', 'jsx-a11y', 'react-refresh'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
@@ -47,11 +41,17 @@ module.exports = {
     },
   },
   rules: {
-    'react/jsx-props-no-spreading': 'off',
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
+    '@typescript-eslint/no-misused-promises': [
+      2,
+      {
+        checksVoidReturn: {
+          attributes: false,
+        },
+      },
     ],
+    'react/jsx-props-no-spreading': 'off',
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react/prop-types': 0,
     'class-methods-use-this': 0,
     eqeqeq: 2,
     'import/extensions': [
@@ -60,16 +60,14 @@ module.exports = {
       {
         ts: 'never',
         tsx: 'never',
-
       },
     ],
     'import/no-cycle': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 2,
-    'import/prefer-default-export': 2,
+    'import/prefer-default-export': 0,
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/click-events-have-key-events': 0,
-    'jsx-a11y/label-has-associated-control': 0,
     'jsx-a11y/no-static-element-interactions': 0,
     'max-classes-per-file': 2,
     'no-await-in-loop': 2,

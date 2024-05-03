@@ -16,29 +16,29 @@
 
 
 .terminal::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-  border-radius: 2px;
+    width: 3px;
+    height: 3px;
+    border-radius: 2px;
 }
 
- .terminal::-webkit-scrollbar-track {
+.terminal::-webkit-scrollbar-track {
     background: #09090a;
-  }
+}
 
 
-   .terminal::-webkit-scrollbar-thumb {
+.terminal::-webkit-scrollbar-thumb {
     background: #69696b;
     border-radius: 50px;
-  }
+}
 
-  .terminal::-webkit-scrollbar-thumb:hover {
+.terminal::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
-  }
+}
 
 .terminal__line {
     line-height: 2;
     white-space: pre-wrap;
-width: 100%;
+    width: 100%;
     max-width: 680px;
 }
 

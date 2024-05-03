@@ -14,7 +14,6 @@ export const removeTokens = async (): Promise<void> => {
   cookies.removeToken(ETokenNames.Refresh);
 };
 
-
 export const logout = (): void => {
   removeTokens()
     .then(() => {

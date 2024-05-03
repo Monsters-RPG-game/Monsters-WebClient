@@ -5,7 +5,7 @@ const ReportBugForm: React.FC<{
 }> = ({ setBugReport }) => {
   return (
     <form className="h-[100%]">
-      <label className="text-slate-300 text-xl font-semibold">Report a Bug</label>
+      <span className="text-slate-300 text-xl font-semibold">Report a Bug</span>
       <textarea onChange={(e) => setBugReport(e.target.value)} className="shad-textarea" maxLength={300} />
       <div className="text-slate-300">
         Reporting bug in this form is useful, but we might see if faster, if you report it{' '}
