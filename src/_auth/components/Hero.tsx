@@ -29,6 +29,9 @@ const Hero: React.FC = () => {
               Read more
             </button>
           </div>
+          <div className=" flex  md:w-1/2 sm:justify-center lg:justify-start">
+            <span className="text-gray-300 text-sm font-semi-bold py-1">Work in progress</span>
+          </div>
         </div>
         <div className="flex-1 my-auto pt-2 hidden lg:block">
           <img src={images.HeroImage4} alt="hero img" className="w-auto h-auto" />

@@ -11,9 +11,13 @@ const ClassFeatureContainer: React.FC = () => {
           <img src={images.ClassesImage} alt="Orc" className="max-w-[150px] md:max-w-[300px] h-auto" />
         </div>
         <div className="flex flex-col flex-1 justify-center ">
-          <h2 className="text-slate-700 text-3xl font-bold font-heroSectionFont mb-14">
-            Master Your Path: Choose Your Class
-          </h2>
+          <div className="mb-14">
+            <h2 className="text-slate-700 text-3xl font-bold font-heroSectionFont ">
+              Master Your Path: Choose Your Class
+            </h2>
+            <span className="text-base text-slate-500">Coming soon</span>
+          </div>
+
           <span className="leading-relaxed text-lg text-slate-600 font-navbarFont">
             Embark on your journey by choosing one of the four distinct classes available. Each class offers its own
             unique set of skills, abilities, and playstyles, promising a diverse and engaging experience. Whether you
