@@ -16,6 +16,7 @@ import type { IUser, IUserProfile } from './types';
 import Races from './_auth/pages/Races';
 import Classes from './_auth/pages/Classes';
 import CreditstSection from './_auth/pages/CreditstSection';
+import Login from './_auth/pages/Login';
 
 const App: React.FC = () => {
   const [isRootRdy, setIsRootRdy] = useState(false);
@@ -45,6 +46,7 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/races" element={<Races />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/classes" element={<Classes />} />
             <Route path="/credits" element={<CreditstSection />} />
           </Route>
