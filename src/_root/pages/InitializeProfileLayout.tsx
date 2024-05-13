@@ -8,7 +8,7 @@ const InitializeProfileLayout: React.FC = () => {
   console.log(profile?.initialized);
 
   if (profile?.initialized) {
-    return <Navigate to="/terminal" />;
+    return <Navigate to="/" />;
   }
   return (
     <div className="h-screen w-full">

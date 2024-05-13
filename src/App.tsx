@@ -56,7 +56,16 @@ const App: React.FC = () => {
 
           <Route element={isRootRdy ? <RootLayout /> : <RootLoader />}>
             <Route
-              path="/*"
+            index
+              path="/"
+              element={<Home account={account as IUser} profile={profile as IUserProfile} addProfile={addProfile} />}
+            />
+              <Route
+              path="/profile"
+              element={<Home account={account as IUser} profile={profile as IUserProfile} addProfile={addProfile} />}
+            />
+               <Route
+              path="/inventory"
               element={<Home account={account as IUser} profile={profile as IUserProfile} addProfile={addProfile} />}
             />
           </Route>

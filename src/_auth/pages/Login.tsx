@@ -20,7 +20,7 @@ const Login: React.FC = () => {
     }
 
     handleLogin(code)
-      .then(() => navigate('/terminal'))
+      .then(() => navigate('/'))
       .catch(() => {
         navigate('/');
       });

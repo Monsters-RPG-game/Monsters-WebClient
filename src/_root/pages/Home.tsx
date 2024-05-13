@@ -4,6 +4,7 @@ import { initApp } from '../../controllers';
 import { useFightsStore, useHistoryStore, useLogsStore, useMessagesStore } from '../../zustand/store';
 import type { IUser, IUserProfile } from '../../types';
 import WebSocket from '../../components/Websocket';
+import Canvas from '../../components/Canvas';
 
 const Home: React.FC<{
   account: IUser;
@@ -32,14 +33,9 @@ const Home: React.FC<{
   }, [addLogs, addFight, initHistory, addMessages, profile]);
 
   return (
-    <div className="h-full w-full flex justify-center ">
+    <div className="h-full w-full flex justify-center  ">
       <WebSocket />
-      <Terminal
-        profile={profile}
-        account={account}
-        addProfile={addProfile}
-        promptLabel={<div className="text-green-400">You{' >>'}</div>}
-      />
+<Canvas/>
     </div>
   );
 };

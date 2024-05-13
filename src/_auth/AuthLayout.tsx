@@ -16,7 +16,7 @@ const AuthLayout: React.FC = () => {
           <Outlet />
         </section>
       ) : (
-        <Navigate to="/terminal" />
+        <Navigate to="/" />
       )}
     </div>
   );
