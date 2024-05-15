@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PiCookieDuotone } from 'react-icons/pi';
-import Portal from '../../components/Portal';
-import * as dialogs from '../../components/ui/alert-dialog';
+import Portal from '../components/Portal';
+import * as dialogs from '../components/ui/alert-dialog';
 import Hero from '../components/Hero';
 import FeaturesContainer from '../components/FeaturesContainer';
 import Footer from '../components/Footer';
@@ -12,6 +12,7 @@ const LandingPage: React.FC = () => {
   const [isPrivacyPopupVisible, setIsPrivacyPopupVisible] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log('Landing page');
     const privacyPolicy = localStorage.getItem('privacyPolicy');
 
     if (!privacyPolicy) {

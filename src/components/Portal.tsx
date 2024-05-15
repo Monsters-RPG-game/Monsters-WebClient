@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { AxiosResponse } from 'axios';
 import * as dialogs from './ui/alert-dialog';
 import type { IPortalProps } from '../types/portal';
 import DeleteAccountForm from './forms/DeleteAccountForm';
@@ -10,7 +11,7 @@ const Portal: React.FC<IPortalProps> = ({
   openButton,
   handleClose,
   triggerFn,
-  deleteAccountHandler,
+  setTodeleteAccountHandler,
   isPortalOpen,
   confirmButtonLabel,
   cancelButtonLabel,
@@ -19,13 +20,13 @@ const Portal: React.FC<IPortalProps> = ({
   const [cofirmDialog, setConfrimDialog] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const confirmDeleteAccountHandler = async (value: boolean, cb: () => Promise<void>): Promise<void> => {
+  const confirmDeleteAccountHandler = async (value: boolean, cb: () => Promise<void> | Promise<AxiosResponse>): Promise<void> => {
     try {
       await cb();
       setErrorMsg('');
     } catch (error) {
       console.log('Error', error);
-      setErrorMsg(`looks like ${error?.message}`);
+      setErrorMsg(`looks like ${(error as Error)?.message}`);
 
       setTimeout(() => {
         setErrorMsg('');
@@ -64,7 +65,7 @@ const Portal: React.FC<IPortalProps> = ({
               {deleteButtonLabel && (
                 <dialogs.AlertDialogAction
                   className=" bg-rose-800 hover:bg-rose-700 my-2"
-                  onClick={() => deleteAccountHandler(confirmDeleteAccountHandler(true, setTodeleteAccount))}
+                  onClick={setTodeleteAccountHandler ? () => setTodeleteAccountHandler(async () => await confirmDeleteAccountHandler(true, setTodeleteAccount)) : () => { }}
                 >
                   {deleteButtonLabel}
                 </dialogs.AlertDialogAction>

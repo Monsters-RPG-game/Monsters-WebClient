@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import navbarLinks from '../../constants/navbarLinks';
+import navbarLinks from '../constants/navbarLinks';
 import MobileNav from './MobileNav';
 
 const TopNavbar: React.FC = () => {

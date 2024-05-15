@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
-import Terminal from '../../components/Terminal';
-import { initApp } from '../../controllers';
-import { useFightsStore, useHistoryStore, useLogsStore, useMessagesStore } from '../../zustand/store';
-import type { IUser, IUserProfile } from '../../types';
-import WebSocket from '../../components/Websocket';
-import Canvas from '../../components/Canvas';
+import { initApp } from '../controllers';
+import { useFightsStore, useHistoryStore, useLogsStore, useMessagesStore } from '../zustand/store';
+import type { IUserProfile } from '../types';
+import WebSocket from '../components/Websocket';
+import Canvas from '../components/Canvas';
 
 const Home: React.FC<{
-  account: IUser;
   profile: IUserProfile;
-  addProfile: (profile: IUserProfile) => void;
-}> = ({ account, profile, addProfile }) => {
+}> = ({ profile }) => {
   const initHistory = useHistoryStore((state) => state.initHistory);
   const addMessages = useMessagesStore((state) => state.addMessages);
   const addLogs = useLogsStore((state) => state.setLogs);
@@ -22,8 +19,8 @@ const Home: React.FC<{
         const preparedLogs =
           logs.length > 0
             ? logs.map((l) => {
-                return { message: l.message, target: l.target };
-              })
+              return { message: l.message, target: l.target };
+            })
             : [];
         return initHistory(preparedLogs);
       })
@@ -35,7 +32,7 @@ const Home: React.FC<{
   return (
     <div className="h-full w-full flex justify-center  ">
       <WebSocket />
-<Canvas/>
+      <Canvas />
     </div>
   );
 };

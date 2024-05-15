@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '../components/Footer';
 import RaceCard from '../components/RaceCard';
-import RacesList from '../../constants/racesList';
+import RacesList from '../constants/racesList';
 
 const Races: React.FC = () => {
   return (

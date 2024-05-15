@@ -1,5 +1,5 @@
 import Footer from '../components/Footer';
-import ClassesList from '../../constants/classesList';
+import ClassesList from '../constants/classesList';
 import ClassCard from '../components/ClassCard';
 
 const Classes: React.FC = () => {

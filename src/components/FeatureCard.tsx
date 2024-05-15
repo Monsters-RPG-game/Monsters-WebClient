@@ -5,7 +5,7 @@ const FeatureCard: React.FC<{
   feature: {
     label: string;
     textContent: string;
-    icon: unknown;
+    icon: React.ElementType;
   };
 }> = ({ className, feature }) => {
   return (

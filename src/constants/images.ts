@@ -1,5 +1,4 @@
 import HeroImage4 from '../../public/images/heroImage4.png';
-
 import RacesImage2 from '../../public/images/raceImage2.png';
 import ClassesImage from '../../public/images/classImage.png';
 import Layer from '../../public/images/layer.svg';
