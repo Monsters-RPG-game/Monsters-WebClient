@@ -1,6 +1,6 @@
 import React from 'react';
 import FeatureCard from './FeatureCard';
-import gameFeatures from '../../constants/gameFeatures';
+import gameFeatures from '../constants/gameFeatures';
 
 const FeaturesContainer: React.FC = () => {
   return (

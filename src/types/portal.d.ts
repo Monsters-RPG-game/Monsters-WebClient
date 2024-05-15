@@ -3,12 +3,12 @@ import type { ReactNode } from 'react';
 export type IPortalProps = {
   children: ReactNode;
   openButton: ReactNode;
-  confirmButtonLabel: string;
+  confirmButtonLabel?: string;
   cancelButtonLabel: string;
-  deleteButtonLabel: string;
+  deleteButtonLabel?: string;
   isPortalOpen: boolean;
   className?: string;
-  triggerFn: () => void;
+  triggerFn: (cb: () => void) => void;
   handleClose: () => void;
-  setTodeleteAccountHandler: () => void;
+  setTodeleteAccountHandler?: (cb: (() => void) | (() => Promise<void>)) => void | Promise<void>;
 };

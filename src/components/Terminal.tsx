@@ -99,7 +99,7 @@ const Terminal = forwardRef((props: TerminalProps) => {
 
   const [bugReport, setBugReport] = useState<string>('');
 
-  const deleteAccountHandler = (cb) => {
+  const deleteAccountHandler = (cb: () => void) => {
     cb();
   };
 
@@ -164,11 +164,11 @@ const Terminal = forwardRef((props: TerminalProps) => {
           className="min-w-[250px]  bg-dark-2 border-dark-4 md:min-w-[350px] lg:min-w-[400px] h-[380px]  flex flex-col justify-between gap-8  "
           isPortalOpen={isSettingsFormOpen}
           openButton={<IoSettings className="mr-4 w-6 h-auto" onClick={() => setIsSettingsFormOpen(true)} />}
-          deleteAccountHandler={deleteAccountHandler}
+          setTodeleteAccountHandler={deleteAccountHandler}
           cancelButtonLabel="Cancel"
           deleteButtonLabel="Delete account"
           handleClose={() => setIsSettingsFormOpen((prevState) => !prevState)}
-          triggerFn={(cb) => {
+          triggerFn={(cb: () => void): void => {
             cb();
           }}
         >

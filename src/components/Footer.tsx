@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import footerItems from '../../constants/footerItems';
+import footerItems from '../constants/footerItems';
 
 const Footer: React.FC = () => {
   return (
