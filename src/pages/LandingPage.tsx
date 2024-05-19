@@ -7,6 +7,7 @@ import FeaturesContainer from '../components/FeaturesContainer';
 import Footer from '../components/Footer';
 import RaceFeatureContainer from '../components/RaceFeatureContainer';
 import ClassFeatureContainer from '../components/ClassFeatureContainer';
+import TopNavbar from '../components/TopNavbar';
 
 const LandingPage: React.FC = () => {
   const [isPrivacyPopupVisible, setIsPrivacyPopupVisible] = useState<boolean>(false);
@@ -22,6 +23,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="w-full">
+       <TopNavbar/>
       <Hero />
       <FeaturesContainer />
       <RaceFeatureContainer />

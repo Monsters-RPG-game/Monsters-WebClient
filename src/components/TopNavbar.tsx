@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import navbarLinks from '../constants/navbarLinks';
@@ -7,13 +7,29 @@ import MobileNav from './MobileNav';
 const TopNavbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { pathname } = useLocation();
+  const [active, setActive] = useState(false);
+
+  const isActive = ():void => {
+    if(window.scrollY >0){
+      setActive(true);
+    }else{
+      setActive(false);
+    }
+  };
 
   const mobileMenuHandler = (): void => {
     setIsMobileMenuOpen((prev) => !prev);
   };
 
+  useEffect(()=>{
+    window.addEventListener('scroll',isActive);
+    return ()=>{
+      window.removeEventListener('scroll',isActive);
+    };
+      },[]);
+
   return (
-    <nav className="w-full py-3 relative px-3 md:px-5 xl:px-0 ">
+    <nav className={`w-full  py-3 sticky top-0 z-50  px-3 md:px-5 xl:px-0  ${active && 'bg-white border-b shadow-sm'}`}>
       <button onClick={mobileMenuHandler} className="lg:hidden mx-5" aria-label="Save" type="button">
         <GiHamburgerMenu />
       </button>

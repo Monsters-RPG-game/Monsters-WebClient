@@ -5,8 +5,14 @@ import { sendToLoginPage } from '../communication';
 
 const Hero: React.FC = () => {
   return (
-    <section className="bg-gradient-to-tr from-slate-900 to-gray-800 px-14 2xl:px-0  ">
-      <div className="mx-auto max-w-7xl flex font-heroSectionFont ">
+    <section className=" bg-gradient-to-tr from-slate-900 to-gray-800 px-14 2xl:px-0 max-w-[97%] rounded-2xl  mx-auto overflow-hidden relative  " style={{
+      backgroundImage: `url(${images.HeroBackground})`,
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover'
+    }}>
+      <div className="w-full h-full absolute md:rounded-3xl left-0 top-0  opacity-75 z-10 pointer-events-none"></div>  
+      <div className="mx-auto max-w-7xl flex font-heroSectionFont  ">
         <div className="flex-1 text-slate-100 flex flex-col gap-3 py-48 sm:items-center lg:items-start">
           <span className=" text-5xl md:text-7xl lg:text-6xl font-semibold ">Pick Your race </span>
           <span className="text-5xl md:text-7xl lg:text-6xl  font-semibold">Master your class</span>
@@ -34,7 +40,7 @@ const Hero: React.FC = () => {
           </div>
         </div>
         <div className="flex-1 my-auto pt-2 hidden lg:block">
-          <img src={images.HeroImage4} alt="hero img" className="w-auto h-auto" />
+          <img src={images.HeroImage4} alt="hero img" className="w-auto h-auto mb-[-260px]"  />
         </div>
       </div>
     </section>

@@ -2,10 +2,13 @@ import React from 'react';
 import Footer from '../components/Footer';
 import RaceCard from '../components/RaceCard';
 import RacesList from '../constants/racesList';
+import TopNavbar from '../components/TopNavbar';
 
 const Races: React.FC = () => {
   return (
+
     <section className="w-full ">
+          <TopNavbar/>
       <div className="max-w-7xl mx-auto py-16">
         <h2 className="text-3xl font-extrabold font-navbarFont text-slate-700 border-b border-slate-200 pb-2">
           Exploring Races
