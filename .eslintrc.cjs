@@ -75,6 +75,7 @@ module.exports = {
     'no-constructor-return': 0,
     'no-invalid-this': 2,
     'no-nested-ternary': 0,
+    'no-new': 0,
     'no-non-null-assertion': 0,
     'no-unused-vars': 2,
     'no-param-reassign': [2, { props: false }],
