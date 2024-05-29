@@ -1,6 +1,5 @@
 import type { ISocketMessage, ISocketNewMessage } from '../types';
 import { ESocketType } from '../enums';
-import { saveLog } from '../communication';
 
 export default class Controller {
   private readonly _add: (target: string, message: string) => Promise<void>;
@@ -95,6 +94,9 @@ export default class Controller {
     input: string,
   ): Promise<void> {
     add(target, input);
-    await saveLog(target, input);
+    // eslint-disable-next-line compat/compat
+    await new Promise(resolve => {
+      resolve('');
+    });
   }
 }

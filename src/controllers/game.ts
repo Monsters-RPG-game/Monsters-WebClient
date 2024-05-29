@@ -3,7 +3,7 @@ import type { AxiosResponse } from 'axios';
 import { ECharacterState, EShowOptions, EUserActions, EUserRace } from '../enums';
 import { handleAttackEnemy, show as showFn } from './responses';
 import type { IAvailableCommands, IDefaultResponse, IFightEntity, IFightTeam, IUserProfile } from '../types';
-import { createFight, getActiveFight, initProfile, leaveFight, saveLog, sendMessage } from '../communication';
+import { createFight, getActiveFight, initProfile, leaveFight, sendMessage } from '../communication';
 
 const baseCommands: IAvailableCommands[] = [
   { action: EUserActions.Attack, target: ['enemy'] },
@@ -33,7 +33,10 @@ const prepareAdd = async (
   input: string,
 ): Promise<void> => {
   add(target, input);
-  await saveLog(target, input);
+  // eslint-disable-next-line compat/compat
+  await new Promise((resolve) => {
+    resolve('');
+  });
 };
 
 const getAvailableCommands = (
@@ -188,7 +191,6 @@ export const newUserCommand = async (
     return;
   }
   // #todo check if command exist on available command list
-  await saveLog('', command);
 
   switch (action) {
     case EUserActions.Help:

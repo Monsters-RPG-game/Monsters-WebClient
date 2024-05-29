@@ -15,15 +15,6 @@ const Home: React.FC<{
 
   useEffect(() => {
     initApp(addMessages, addLogs, profile, addFight)
-      .then((logs) => {
-        const preparedLogs =
-          logs.length > 0
-            ? logs.map((l) => {
-              return { message: l.message, target: l.target };
-            })
-            : [];
-        return initHistory(preparedLogs);
-      })
       .catch((err) => {
         console.log('Cannot init app', err);
       });
