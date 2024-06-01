@@ -1,4 +1,5 @@
 import type * as types from '../types';
+import type WebsocketController from '../controllers/websocket';
 
 export type ProfileStore = {
   profile: types.IUserProfile | undefined;
@@ -36,3 +37,17 @@ export type IMessagesStore = {
   messages: Record<string, types.IPreparedMessagesBody>;
   addMessages: (messages: Record<string, types.IPreparedMessagesBody>) => void;
 };
+
+export type IWebsocketStore = {
+  controller: WebsocketController | undefined,
+  addController: (controller: WebsocketController) => void;
+};
+
+export type ILocationStore = {
+  map: string;
+  x: number;
+  y: number
+  initLocation: (data: { x: number, y: number, map?: string }) => void;
+};
+
+

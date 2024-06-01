@@ -21,14 +21,6 @@ export const getMessages = async (): Promise<AxiosResponse<types.IGetMessages>> 
   }
 };
 
-export const getLogs = async (): Promise<AxiosResponse<types.IGetLogs>> => {
-  try {
-    return getHttpClient().get('logs');
-  } catch (err) {
-    throw new Error((err as AxiosError<{ error: Error }>).response!.data.error.message);
-  }
-};
-
 export const initProfile = async (race: EUserRace): Promise<AxiosResponse<types.IDefaultResponse>> => {
   try {
     return getHttpClient().post('/profile', { race });
@@ -108,10 +100,9 @@ export const getUserProfile = async (name: string): Promise<AxiosResponse<types.
   }
 };
 
-// #TODO Save logs with their ids in local storage and fetch logs based on latest _id
-export const saveLog = async (target: string, message: string): Promise<AxiosResponse<types.IAddLogs>> => {
+export const getMap = async (): Promise<AxiosResponse<{ data: types.IMapEntity }>> => {
   try {
-    return getHttpClient().post('/logs', { message, target });
+    return getHttpClient().get('/maps?name=main');
   } catch (err) {
     throw new Error((err as AxiosError<{ error: Error }>).response!.data.error.message);
   }

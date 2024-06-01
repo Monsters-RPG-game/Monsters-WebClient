@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa6';
-import images from '../../constants/images';
-import { sendToLoginPage } from '../../communication';
+import images from '../constants/images';
+import { sendToLoginPage } from '../communication';
 
 const Hero: React.FC = () => {
   return (

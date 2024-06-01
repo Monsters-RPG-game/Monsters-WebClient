@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
-import RacesList from '../../constants/racesList';
-import { initProfile } from '../../communication';
+import RacesList from '../constants/racesList';
+import { initProfile } from '../communication';
+import type { EUserRace } from '../enums';
 
 const SelectRacePage: React.FC = () => {
   const [selectedRaceIndex, setSelectedRaceIndex] = useState<number>(0);
@@ -16,17 +17,17 @@ const SelectRacePage: React.FC = () => {
     });
   };
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<unknown, unknown, { race: EUserRace }>({
     mutationFn: ({ race }) => {
       return initProfile(race);
     },
     onSuccess: () => {
       window.location.reload();
     },
-    onError: () => {},
+    onError: () => { },
   });
 
-  const confirmRaceHandler = ({ race }) => {
+  const confirmRaceHandler = ({ race }: { race: EUserRace }) => {
     mutate({ race });
   };
 
@@ -49,7 +50,7 @@ const SelectRacePage: React.FC = () => {
       <span className="text-3xl text-slate-600 font-bold"> {RacesList[selectedRaceIndex].label}</span>
       <button
         type="button"
-        onClick={() => confirmRaceHandler({ race: RacesList[selectedRaceIndex].label.toLocaleLowerCase() })}
+        onClick={() => confirmRaceHandler({ race: RacesList[selectedRaceIndex].label.toLocaleLowerCase() as EUserRace })}
         className="bg-blue-500 font-semibold text-white py-4 px-16 rounded my-20 sm:my-8"
       >
         Confirm

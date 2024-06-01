@@ -1,4 +1,3 @@
-
 export enum EUserRace {
   Human = 'human',
   Elf = 'elf',

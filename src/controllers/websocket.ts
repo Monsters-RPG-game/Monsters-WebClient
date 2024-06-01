@@ -1,15 +1,27 @@
-import type { ISocketMessage, ISocketNewMessage } from '../types';
-import { ESocketType } from '../enums';
-import { saveLog } from '../communication';
+import type { ISocketMessage, ISocketOutMessage, ISocketNewMessage } from '../types';
+import { ESocketType, ETokenNames } from '../enums';
+import { Cookies } from '../tools';
 
 export default class Controller {
   private readonly _add: (target: string, message: string) => Promise<void>;
+
+  private _resolve: { action: ((val: void | PromiseLike<void>) => void), timer: NodeJS.Timeout | null } | undefined = undefined;
 
   constructor(add: (target: string, message: string) => void) {
     this._add = (target: string, command: string): Promise<void> => this.prepareAdd(add, target, command);
   }
 
   private _client: WebSocket | undefined;
+
+  private _request: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined = undefined;
+
+  private get resolve(): { action: (val: void | PromiseLike<void>) => void, timer: NodeJS.Timeout | null } {
+    return this._resolve as { action: (val: void | PromiseLike<void>) => void, timer: NodeJS.Timeout | null };
+  }
+
+  private set resolve(val: { action: (val: void | PromiseLike<void>) => void, timer: NodeJS.Timeout | null }) {
+    this._resolve = val;
+  }
 
   private get client(): WebSocket {
     return this._client as WebSocket;
@@ -19,15 +31,27 @@ export default class Controller {
     this._client = value;
   }
 
+  private get request(): ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined {
+    return this._request as ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined;
+  }
+
+  private set request(value: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined) {
+    this._request = value;
+  }
+
+
   private get add(): (target: string, message: string) => Promise<void> {
     return this._add;
   }
 
-  init(): void {
-    const server = import.meta.env.VITE_API_WS_BACKEND as string;
-    this.client = new WebSocket(server);
-
-    this.startListeners();
+  async init(): Promise<void> {
+    // eslint-disable-next-line compat/compat
+    return new Promise(resolve => {
+      const server = import.meta.env.VITE_API_WS_BACKEND as string;
+      this.client = new WebSocket(server);
+      this.resolve = { action: resolve, timer: null };
+      this.startListeners();
+    });
   }
 
   close(reason?: string): void {
@@ -47,8 +71,19 @@ export default class Controller {
     }
   }
 
+  async send(message: ISocketOutMessage): Promise<ISocketMessage> {
+    // eslint-disable-next-line compat/compat
+    return new Promise(resolve => {
+      this.client.send(JSON.stringify(message));
+      this.request = resolve;
+    });
+  }
+
   private startListeners(): void {
     this.client.onopen = (): void => {
+      this.resolve.timer = setTimeout(() => {
+        this.resolve.action();
+      }, 2000);
       console.log('websocket connected');
     };
     this.client.onerror = (err): void => {
@@ -73,14 +108,37 @@ export default class Controller {
       console.log(err);
     }
 
+    if (this.request) {
+      this.request(parsed as ISocketMessage);
+    }
+
     switch (parsed.type as ESocketType) {
       case ESocketType.Message:
         await this.handleUserMessage(parsed.payload as ISocketNewMessage);
+        break;
+      case ESocketType.Error:
+        await this.handleError(parsed.payload as Error);
         break;
       default:
         console.log('Unknown websocket message');
         console.log(parsed);
         break;
+    }
+  }
+
+  private async handleError(error: Error): Promise<void> {
+    if (error.name === 'AwaitingAuthorizationError') {
+      const cookies = new Cookies();
+      const access = cookies.getToken(ETokenNames.Access);
+      await this.send({
+        target: 'authorization',
+        subTarget: '',
+        payload: {
+          key: access
+        }
+      });
+    } else {
+      console.log('Got error from server', error);
     }
   }
 
@@ -95,6 +153,10 @@ export default class Controller {
     input: string,
   ): Promise<void> {
     add(target, input);
-    await saveLog(target, input);
+    // eslint-disable-next-line compat/compat
+    await new Promise(resolve => {
+      resolve('');
+    });
   }
 }
+

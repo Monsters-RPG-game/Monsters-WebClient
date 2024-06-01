@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import type { IRegisterFormValues } from '../../../types';
-import { createAccount } from '../../../communication';
+import type { IRegisterFormValues } from '../../types';
+import { createAccount } from '../../communication';
 
 const Register: React.FC = () => {
-  const [err, setErr] = useState<string>('');
+  const [err, setErr] = useState<string | undefined>(undefined);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
@@ -25,7 +25,8 @@ const Register: React.FC = () => {
   });
 
   const mutation = useMutation(createAccount, {
-    onError: (error: Error) => {
+    // #TODO This looks bad....
+    onError: (error: { response: { data: { error: { message: string } } } }) => {
       setErr(error?.response?.data?.error?.message);
     },
     onSuccess: () => {
@@ -54,7 +55,7 @@ const Register: React.FC = () => {
   return (
     <div
       className="flex bg-gradient-to-r from-gray-300 via-gray-200 to-gray-100 flex-col justify-center items-center min-h-[100%] flex-1 pb-5"
-      onClick={() => setErr(null)}
+      onClick={() => setErr(undefined)}
     >
       <Link to="/">
         <h2 className="text-7xl text-slate-700 md:text-8xl font-bold mb-10 font-navbarFotn ">
