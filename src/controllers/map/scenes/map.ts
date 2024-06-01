@@ -187,6 +187,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update(): void {
+    // HERE
     const speed = 175;
     const prevVelocity = this.player!.body.velocity.clone();
 
