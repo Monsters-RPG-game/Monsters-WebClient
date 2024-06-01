@@ -69,3 +69,23 @@ export const useMessagesStore = create<types.IMessagesStore>((set) => ({
       messages: { ...state.messages, ...output },
     })),
 }));
+
+export const useWebsocketStore = create<types.IWebsocketStore>((set) => ({
+  controller: undefined,
+  addController: (output): void =>
+    set(() => ({
+      controller: output
+    })),
+}));
+
+export const useLocationStore = create<types.ILocationStore>((set) => ({
+  map: '',
+  x: 0,
+  y: 0,
+  initLocation: (data): void =>
+    set(() => ({
+      x: data.x,
+      y: data.y,
+      map: data.map
+    })),
+}));

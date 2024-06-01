@@ -1,4 +1,4 @@
-import type { ISocketMessage, ISocketNewMessage } from '../types';
+import type { ISocketMessage, ISocketOutMessage, ISocketNewMessage } from '../types';
 import { ESocketType } from '../enums';
 
 export default class Controller {
@@ -10,6 +10,8 @@ export default class Controller {
 
   private _client: WebSocket | undefined;
 
+  private _request: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined = undefined;
+
   private get client(): WebSocket {
     return this._client as WebSocket;
   }
@@ -18,15 +20,26 @@ export default class Controller {
     this._client = value;
   }
 
+  private get request(): ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined {
+    return this._request as ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined;
+  }
+
+  private set request(value: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined) {
+    this._request = value;
+  }
+
+
   private get add(): (target: string, message: string) => Promise<void> {
     return this._add;
   }
 
-  init(): void {
-    const server = import.meta.env.VITE_API_WS_BACKEND as string;
-    this.client = new WebSocket(server);
-
-    this.startListeners();
+  async init(): Promise<void> {
+    // eslint-disable-next-line compat/compat
+    return new Promise(resolve => {
+      const server = import.meta.env.VITE_API_WS_BACKEND as string;
+      this.client = new WebSocket(server);
+      this.startListeners(resolve);
+    });
   }
 
   close(reason?: string): void {
@@ -46,8 +59,17 @@ export default class Controller {
     }
   }
 
-  private startListeners(): void {
+  async send(message: ISocketOutMessage): Promise<ISocketMessage> {
+    // eslint-disable-next-line compat/compat
+    return new Promise(resolve => {
+      this.client.send(JSON.stringify(message));
+      this.request = resolve;
+    });
+  }
+
+  private startListeners(resolve: (val: void | PromiseLike<void>) => void): void {
     this.client.onopen = (): void => {
+      resolve();
       console.log('websocket connected');
     };
     this.client.onerror = (err): void => {
@@ -70,6 +92,10 @@ export default class Controller {
       console.log("Couldn't parse socket message");
       console.log('err');
       console.log(err);
+    }
+
+    if (this.request) {
+      this.request(parsed as ISocketMessage);
     }
 
     switch (parsed.type as ESocketType) {

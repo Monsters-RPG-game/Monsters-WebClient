@@ -2,11 +2,13 @@ import Phaser from 'phaser';
 import tileset from '../assets/tileset_32px.png';
 import characterImage from '../assets/character.png';
 import characterData from '../assets/character.json';
+import { useWebsocketStore, useLocationStore } from '../../../zustand/store';
+import { ECharacterState } from '../../../enums';
 
 export default class MainScene extends Phaser.Scene {
   private _cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null;
 
-  private _lastMovement: number = Date.now();
+  private _canMove: boolean = false;
 
   private _showDebug: boolean = false;
 
@@ -14,7 +16,17 @@ export default class MainScene extends Phaser.Scene {
 
   private _lastPosition: { x: number, y: number } = { x: 0, y: 0 };
 
-  private _canMove: boolean = true;
+  private _shouldSend: boolean = true;
+
+  private _map: Phaser.Tilemaps.Tilemap | null = null;
+
+  private get map(): Phaser.Tilemaps.Tilemap | null {
+    return this._map;
+  }
+
+  private set map(val: Phaser.Tilemaps.Tilemap | null) {
+    this._map = val;
+  }
 
   private get cursors(): Phaser.Types.Input.Keyboard.CursorKeys | null {
     return this._cursors;
@@ -22,14 +34,6 @@ export default class MainScene extends Phaser.Scene {
 
   private set cursors(val: Phaser.Types.Input.Keyboard.CursorKeys | null) {
     this._cursors = val;
-  }
-
-  private get canMove(): boolean {
-    return this._canMove;
-  }
-
-  private set canMove(val: boolean) {
-    this._canMove = val;
   }
 
   private get lastPosition(): { x: number, y: number } {
@@ -40,12 +44,21 @@ export default class MainScene extends Phaser.Scene {
     this._lastPosition = val;
   }
 
-  private get lastMovement(): number {
-    return this._lastMovement;
+  private set shouldSend(val: boolean) {
+    this._shouldSend = val;
   }
 
-  private set lastMovement(val: number) {
-    this._lastMovement = val;
+  private get shouldSend(): boolean {
+    return this._shouldSend;
+  }
+
+
+  private get canMove(): boolean {
+    return this._canMove;
+  }
+
+  private set canMove(val: boolean) {
+    this._canMove = val;
   }
 
   private get showDebug(): boolean {
@@ -109,6 +122,10 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.collider(this.player,
       worldLayer);
 
+    const location = useLocationStore.getState();
+    this.player.x = location.x * map.tileWidth;
+    this.player.y = location.y * map.tileWidth;
+
     this.lastPosition = {
       x: this.player.x,
       y: this.player.y
@@ -164,11 +181,12 @@ export default class MainScene extends Phaser.Scene {
     camera.startFollow(this.player);
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
+    this.map = map;
+
     this.cursors = this.input.keyboard!.createCursorKeys();
   }
 
   update(): void {
-    if (!this.canMove) return;
     const speed = 175;
     const prevVelocity = this.player!.body.velocity.clone();
 
@@ -216,20 +234,43 @@ export default class MainScene extends Phaser.Scene {
 
   private move(param: 'x' | 'y', up: boolean): void {
     const speed = 20;
+    const width = this.map?.tileWidth ?? 1;
 
-    if ((this.player!.x - this.lastPosition.x > 32) || this.lastPosition.x - this.player!.x > 32 || this.player!.y - this.lastPosition.y > 32 || this.lastPosition.y - this.player!.y > 32) {
-      if (Date.now() - this.lastMovement > 2000) {
+    // Replace hardcoded width of 32 with map width
+    if (((this.player!.x / width) - (this.lastPosition.x / width) > 1) || (this.lastPosition.x / width) - (this.player!.x / width) > 1 || (this.player!.y / width) - (this.lastPosition.y / width) > 1 || (this.lastPosition.y / width) - (this.player!.y / width) > 1) {
+      // Sending websocket request to move will not work, if user does not move 1 "field", which is 32 px on main map.
+      if (this.canMove) {
         this.lastPosition.x = this.player!.x;
         this.lastPosition.y = this.player!.y;
-        this.lastMovement = Date.now();
+        this.canMove = false;
+        this.shouldSend = true;
+      } else if (!this.canMove && this.shouldSend) {
+        this.shouldSend = false;
+        // This does not handle negative reponses from backend. Add them
+        const controller = useWebsocketStore.getState().controller!;
+        controller.send({
+          target: 'movement',
+          subTarget: 'move',
+          payload: {
+            x: parseInt((this.player!.x / 32).toFixed(0), 10),
+            y: parseInt((this.player!.y / 32).toFixed(0), 10)
+          }
+        }).then((callback) => {
+          this.canMove = true;
+          if (callback.state?.state === ECharacterState.Fight) {
+            console.log('Initialized fight');
+          }
+          return undefined;
+        }).catch(err => {
+          this.canMove = true;
+          console.log('Got err on movement');
+          console.log(err);
+        });
       }
+    } else if (param === 'x') {
+      this.player!.setVelocityX(up ? speed : -speed);
     } else {
-      if (param === 'x') {
-        this.player!.setVelocityX(up ? speed : -speed);
-      } else {
-        this.player!.setVelocityY(up ? speed : -speed);
-      }
-      this.lastMovement = Date.now();
+      this.player!.setVelocityY(up ? speed : -speed);
     }
   }
 }

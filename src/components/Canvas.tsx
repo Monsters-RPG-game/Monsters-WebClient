@@ -1,30 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import startMap from '../controllers/map';
+import startMap, { initLocation } from '../controllers/map';
 import type { IMapEntity } from '../types';
-import { getMap } from '../communication';
+import { useLocationStore } from '../zustand/store';
 
 const Canvas: React.FC = () => {
+  const userLocation = useLocationStore.getState();
   const [map, setMap] = useState<IMapEntity | undefined>(undefined);
 
   useEffect(() => {
-    if (!map) {
-      if (!sessionStorage.getItem('mainMap')) {
-        getMap().then((data) => {
-          setMap(data.data.data);
-          sessionStorage.setItem('mainMap', JSON.stringify(data.data.data));
-          startMap();
-          return undefined;
-        }).catch(err => {
-          console.log('Cannot fetch map');
-          console.log(err);
-        });
-      } else {
-        setMap(JSON.parse(sessionStorage.getItem('mainMap') as string) as IMapEntity);
-      }
+    if (!map && !userLocation.x) {
+      initLocation(setMap).catch(err => {
+        console.log('Coulnt not init map', err);
+      });
     } else {
       startMap();
     }
-  }, [map]);
+  }, [map, userLocation.x]);
 
   return <div id='game' />;
 };
