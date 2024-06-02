@@ -7,8 +7,14 @@ import { useAccountStore, useLocationStore, useWebsocketStore } from '../../zust
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
+  width: 375,
   height: 600,
+  scale: {
+    // Fit to window
+    mode: Phaser.Scale.FIT,
+    // Center vertically and horizontally
+    autoCenter: Phaser.Scale.CENTER_BOTH
+},
   pixelArt: true,
   parent: 'game',
   scene: [mainScene],

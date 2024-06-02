@@ -1,6 +1,10 @@
+import { error } from 'console';
 import type { ISocketMessage, ISocketOutMessage, ISocketNewMessage } from '../types';
-import { ESocketType, ETokenNames } from '../enums';
+import { ECharacterState, ESocketType, ETokenNames } from '../enums';
 import { Cookies } from '../tools';
+import { useFightsStore, useProfileStore } from '../zustand/store';
+import { getActiveFight } from '../communication';
+
 
 export default class Controller {
   private readonly _add: (target: string, message: string) => Promise<void>;
@@ -119,6 +123,9 @@ export default class Controller {
       case ESocketType.Error:
         await this.handleError(parsed.payload as Error);
         break;
+        case ESocketType.Success:
+          await this.handleMapMovement(parsed as ISocketMessage);
+          break;
       default:
         console.log('Unknown websocket message');
         console.log(parsed);
@@ -145,7 +152,22 @@ export default class Controller {
   private async handleUserMessage(message: ISocketNewMessage): Promise<void> {
     await this.add('System', 'Received new message');
     await this.add(message.sender, message.body);
-  }
+
+
+  };
+
+  private async handleMapMovement(message: ISocketMessage): Promise<void> {
+
+
+    if(message?.state?.state ===ECharacterState.Fight){
+
+      const {profile,setProfile}= useProfileStore.getState();
+      const {addCurrentFight}=useFightsStore.getState();
+      setProfile({...profile,state:message.state.state});
+
+       getActiveFight().then((state)=> addCurrentFight(state.data.data[0])).catch(error=>console.log(error));
+    }
+  };
 
   private async prepareAdd(
     add: (target: string, command: string) => void,
