@@ -5,6 +5,7 @@ import Layer from '../../public/images/layer.svg';
 import Layer2 from '../../public/images/layer2.svg';
 import GuideLineImage from '../../public/images/guidelineImage.png';
 import SnowySheetImage from '../../public/images/snowy-sheet.png';
+import CombatSceneImage from "../../public/images/combatScene.svg";
 
 const images = {
   HeroImage4,
@@ -14,6 +15,7 @@ const images = {
   Layer,
   Layer2,
   GuideLineImage,
+  CombatSceneImage,
 };
 
 export default images;

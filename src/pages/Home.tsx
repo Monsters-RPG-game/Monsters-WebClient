@@ -8,6 +8,8 @@ import Canvas from '../components/Canvas';
 import Popup from '../components/Popup';
 import { leaveFight } from '../communication';
 import { ECharacterState } from '../enums';
+import images from '../constants/images';
+import CombatStage from './CombatStage';
 
 const Home: React.FC<{
   profile: IUserProfile;
@@ -19,7 +21,7 @@ const Home: React.FC<{
   const socketController = useWebsocketStore(state => state.controller);
   const profileState = useProfileStore((state) => state.profile);
   const fights = useFightsStore((state) => state.fights);
-
+const playerActiveFight =  useFightsStore((state)=>state.activeFight);
 
 
 
@@ -39,6 +41,8 @@ const fightModalHandler=():void=>{
 };
 
 
+
+
 useEffect(()=>{
   console.log('profileState');
 console.log(profileState);
@@ -56,12 +60,8 @@ console.log(profileState);
       <WebSocket />
       {socketController ? <Canvas /> : null}
 
-{profileState.state===ECharacterState.Fight &&<Popup >
-<div>
-<button
-className='bg-blue-500 text-slate-50 rounded font-semibold px-2 py-1'
-onClick={fightModalHandler}>Leave Fight</button>
-</div>
+{profileState?.state===ECharacterState.Fight &&<Popup >
+<CombatStage combat={playerActiveFight} fightModalHandler={fightModalHandler} />
 </Popup>}
     </div>
   );
