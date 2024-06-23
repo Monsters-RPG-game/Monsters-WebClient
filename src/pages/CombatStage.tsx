@@ -2,7 +2,7 @@ import React from 'react';
 import { attack } from '../communication';
 import images from '../constants/images';
 import type * as types from '../types';
-
+// @TODO: delete all of this
 interface IProps {
   fightModalHandler: () => void;
   combat: types.IFightEntity | undefined;

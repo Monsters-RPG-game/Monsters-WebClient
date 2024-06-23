@@ -8,7 +8,7 @@ export type IPortalProps = {
   deleteButtonLabel?: string;
   isPortalOpen: boolean;
   className?: string;
-  triggerFn: (cb: () => void) => void;
+  triggerFn: (...params: unknown[]) => Promise<void>;
   handleClose: () => void;
   setTodeleteAccountHandler?: (cb: (() => void) | (() => Promise<void>)) => void | Promise<void>;
 };
