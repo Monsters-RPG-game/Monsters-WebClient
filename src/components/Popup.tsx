@@ -2,7 +2,7 @@ import React from 'react';
 import images from '../constants/images';
 
 interface IProps {
-  children: boolean;
+  children: React.FC | boolean;
 }
 
 const Popup: React.FC<IProps> = ({ children }) => {
