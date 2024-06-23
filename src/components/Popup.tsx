@@ -3,10 +3,9 @@ import images from '../constants/images';
 
 interface IProps {
   children: boolean;
-  setOrderPopup: (value: boolean) => void;
 }
 
-const Popup: React.FC = ({ children, setOrderPopup }) => {
+const Popup: React.FC<IProps> = ({ children }) => {
   const BannerImg = {
     backgroundImage: `url(${images.CombatSceneImage})`,
     backgroundPosition: 'center',
