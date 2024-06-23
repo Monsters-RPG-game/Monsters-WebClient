@@ -1,23 +1,16 @@
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import Home from '../pages/Home';
-import { useAccountStore, useProfileStore } from '../zustand/store';
-import type { IUser } from '../types';
-import Navbar from '../components/Navbar';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import MobileNavbar from '../components/MobileNavbar';
+import Navbar from '../components/Navbar';
+import Home from '../pages/Home';
 import SelectRacePage from '../pages/SelectRacePage';
-import Popup from '../components/Popup';
-import { ECharacterState } from '../enums';
-import { leaveFight } from '../communication';
+import type { IUser } from '../types';
+import { useAccountStore, useProfileStore } from '../zustand/store';
 
 const RootLayout: React.FC = () => {
   const account = useAccountStore((state) => state.account);
   const profile = useProfileStore((state) => state.profile);
 
   const addProfile = useProfileStore((state) => state.setProfile);
-
-
-
 
   return (
     <div className=" h-screen flex flex-col w-full ">
@@ -34,9 +27,10 @@ const RootLayout: React.FC = () => {
               />
             </Routes>
           </Router>
-
         </section>
-      ) : <SelectRacePage />}
+      ) : (
+        <SelectRacePage />
+      )}
     </div>
   );
 };

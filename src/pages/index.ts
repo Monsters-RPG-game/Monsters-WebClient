@@ -19,5 +19,5 @@ export {
   Login,
   Profile,
   Races,
-  SelectRacePage
+  SelectRacePage,
 };

@@ -9,17 +9,19 @@ import CreditstSection from '../pages/CreditstSection';
 import TopNavbar from '../components/TopNavbar';
 
 const AuthLayout: React.FC = () => {
-  return <Router>
-    <TopNavbar />
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/races" element={<Races />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/classes" element={<Classes />} />
-      <Route path="/credits" element={<CreditstSection />} />
-    </Routes>
-  </Router>;
+  return (
+    <Router>
+      <TopNavbar />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/races" element={<Races />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/classes" element={<Classes />} />
+        <Route path="/credits" element={<CreditstSection />} />
+      </Routes>
+    </Router>
+  );
 };
 
 export default AuthLayout;

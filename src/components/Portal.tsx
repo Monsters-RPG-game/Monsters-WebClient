@@ -20,7 +20,10 @@ const Portal: React.FC<IPortalProps> = ({
   const [cofirmDialog, setConfrimDialog] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const confirmDeleteAccountHandler = async (value: boolean, cb: () => Promise<void> | Promise<AxiosResponse>): Promise<void> => {
+  const confirmDeleteAccountHandler = async (
+    value: boolean,
+    cb: () => Promise<void> | Promise<AxiosResponse>,
+  ): Promise<void> => {
     try {
       await cb();
       setErrorMsg('');
@@ -65,7 +68,14 @@ const Portal: React.FC<IPortalProps> = ({
               {deleteButtonLabel && (
                 <dialogs.AlertDialogAction
                   className=" bg-rose-800 hover:bg-rose-700 my-2"
-                  onClick={setTodeleteAccountHandler ? () => setTodeleteAccountHandler(async () => await confirmDeleteAccountHandler(true, setTodeleteAccount)) : () => { }}
+                  onClick={
+                    setTodeleteAccountHandler
+                      ? () =>
+                          setTodeleteAccountHandler(
+                            async () => await confirmDeleteAccountHandler(true, setTodeleteAccount),
+                          )
+                      : () => {}
+                  }
                 >
                   {deleteButtonLabel}
                 </dialogs.AlertDialogAction>
