@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import images from '../constants/images';
 
 interface IProps {
-  children: React.FC | boolean;
+  children: ReactNode | boolean;
 }
 
 const Popup: React.FC<IProps> = ({ children }) => {
