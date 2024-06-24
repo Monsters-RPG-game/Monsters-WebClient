@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import images from '../constants/images';
 
 interface IProps {
-  children: ReactNode | boolean;
+  children: ReactNode | true | false;
 }
 
 const Popup: React.FC<IProps> = ({ children }) => {
@@ -16,23 +17,19 @@ const Popup: React.FC<IProps> = ({ children }) => {
   };
 
   return (
-    <>
-      {
-        <div className="popup  ">
-          <div className="h-[100%]  w-screen fixed   left-0 bg-black/40 z-50 backdrop-blur-sm">
-            <div
-              style={BannerImg}
-              className="fixed  top-0 left-0   p-4 shadow-md bg-white dark:bg-gray-900 rouded-md duration-200 w-full h-full"
-            >
-              {/* Header section */}
-              <div className="flex items-center justify-between" />
-              {/* Form section */}
-              <div className=" h-full  ">{children}</div>
-            </div>
-          </div>
+    <div className="popup  ">
+      <div className="h-[100%]  w-screen fixed   left-0 bg-black/40 z-50 backdrop-blur-sm">
+        <div
+          style={BannerImg}
+          className="fixed  top-0 left-0   p-4 shadow-md bg-white dark:bg-gray-900 rouded-md duration-200 w-full h-full"
+        >
+          {/* Header section */}
+          <div className="flex items-center justify-between" />
+          {/* Form section */}
+          <div className=" h-full  ">{children}</div>
         </div>
-      }
-    </>
+      </div>
+    </div>
   );
 };
 
