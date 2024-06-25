@@ -1,6 +1,7 @@
 // @TODO: delete all of this
 
 import React from 'react';
+import { IFightEntity } from '../types';
 
 // import React from 'react';
 // import { attack } from '../communication';
@@ -77,7 +78,12 @@ import React from 'react';
 
 // export default CombatStage;
 
-const CombatStage: React.FC = () => {
+const CombatStage: React.FC<{ combat: IFightEntity | undefined; fightModalHandler: () => void }> = ({
+  combat,
+  fightModalHandler,
+}) => {
+  combat;
+  fightModalHandler;
   return <div>CombatStage</div>;
 };
 
