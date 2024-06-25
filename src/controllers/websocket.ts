@@ -156,7 +156,7 @@ export default class Controller {
     if (message?.state?.state === ECharacterState.Fight) {
       const { profile, setProfile } = useProfileStore.getState();
       const { addCurrentFight } = useFightsStore.getState();
-      setProfile({ ...profile, state: message.state.state });
+      setProfile({ ...profile!, state: message.state.state });
 
       getActiveFight()
         .then((state) => addCurrentFight(state.data.data[0]))

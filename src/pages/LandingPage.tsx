@@ -27,10 +27,8 @@ const LandingPage: React.FC = () => {
       <RaceFeatureContainer />
       <ClassFeatureContainer />
       <Footer />
-
-      {isPrivacyPopupVisible && (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
+      {/* @TODO: Create new Portal */}
+      {/* {isPrivacyPopupVisible && (
         <Portal
           handleClose={() => setIsPrivacyPopupVisible((prevState) => !prevState)}
           className="bg-slate-100 "
@@ -63,7 +61,7 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
         </Portal>
-      )}
+      )} */}
     </div>
   );
 };
