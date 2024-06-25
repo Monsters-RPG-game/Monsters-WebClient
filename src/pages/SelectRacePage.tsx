@@ -27,7 +27,7 @@ const SelectRacePage: React.FC = () => {
     onError: () => {},
   });
 
-  const confirmRaceHandler = ({ race }: { race: EUserRace }) => {
+  const confirmRaceHandler = ({ race }: { race: EUserRace }): void => {
     mutate({ race });
   };
 
