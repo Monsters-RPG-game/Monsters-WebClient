@@ -1,5 +1,7 @@
 // @TODO: delete all of this
 
+import React from 'react';
+
 // import React from 'react';
 // import { attack } from '../communication';
 // import images from '../constants/images';
@@ -75,7 +77,7 @@
 
 // export default CombatStage;
 
-const CombatStage = () => {
+const CombatStage: React.FC = () => {
   return <div>CombatStage</div>;
 };
 
