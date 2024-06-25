@@ -28,6 +28,7 @@ export const handleLogin = async (code: string): Promise<void> => {
 export const initApp = async (
   addMessages: (messages: Record<string, IPreparedMessagesBody>) => void,
   addLogs: (logs: ILog[]) => void,
+  // @TODO: Create logic utilizing addLogs function
   profile: IUserProfile,
   addFight: (data: IFightEntity) => void,
 ): Promise<void> => {
