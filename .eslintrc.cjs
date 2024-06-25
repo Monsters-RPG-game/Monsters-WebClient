@@ -32,6 +32,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     createDefaultProgram: true,
   },
+  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts'],
   settings: {
     'import/resolver': {
       typescript: {},
