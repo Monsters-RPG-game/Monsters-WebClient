@@ -47,7 +47,7 @@ export default class Controller {
   }
 
   async init(): Promise<void> {
-    // eslint-disable-next-line compat/compat
+
     return new Promise((resolve) => {
       const server = import.meta.env.VITE_API_WS_BACKEND as string;
       this.client = new WebSocket(server);
@@ -74,7 +74,7 @@ export default class Controller {
   }
 
   async send(message: ISocketOutMessage): Promise<ISocketMessage> {
-    // eslint-disable-next-line compat/compat
+
     return new Promise((resolve) => {
       this.client.send(JSON.stringify(message));
       this.request = resolve;
@@ -170,7 +170,7 @@ export default class Controller {
     input: string,
   ): Promise<void> {
     add(target, input);
-    // eslint-disable-next-line compat/compat
+
     await new Promise((resolve) => {
       resolve('');
     });

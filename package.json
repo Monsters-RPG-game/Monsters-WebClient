@@ -20,6 +20,9 @@
       "prettier --ignore-path .eslintignore --parser json --write"
     ]
   },
+  "browserslist": [
+    "defaults, not op_mini all"
+  ],
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",

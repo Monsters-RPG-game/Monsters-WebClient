@@ -39,7 +39,7 @@ export const attack = async (target: string): Promise<AxiosResponse<types.IAttac
 
 export const getActiveFight = async (): Promise<AxiosResponse<types.IGetActiveFight>> => {
   try {
-    // eslint-disable-next-line compat/compat
+
     const queryParams = new URLSearchParams({
       active: 'true',
     }).toString();
@@ -58,7 +58,7 @@ export const sendToLoginPage = async (): Promise<void> => {
   const challenge = await generateCodeChallengeFromVerifier(verifier);
   sessionStorage.setItem('verifier', verifier);
 
-  // eslint-disable-next-line compat/compat
+
   const queryParams = new URLSearchParams({
     client_id: clientId,
     response_type: 'code',
@@ -76,7 +76,7 @@ export const sendToLogoutPage = (): void => {
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
   const server = import.meta.env.VITE_API_BACKEND as string;
 
-  // eslint-disable-next-line compat/compat
+
   const params = new URLSearchParams({
     post_logout_redirect_uri: redirectUrl,
     client_id: clientId,
@@ -125,7 +125,7 @@ export const login = async (code: string): Promise<AxiosResponse<types.IGetToken
   const verifier = sessionStorage.getItem('verifier') as string;
   sessionStorage.removeItem('verifier');
 
-  // eslint-disable-next-line compat/compat
+
   const body = new URLSearchParams({
     client_id: clientId,
     client_secret: clientSecret,
@@ -146,7 +146,7 @@ export const revokeToken = async (token: string, type: ETokenType): Promise<Axio
   const clientSecret = import.meta.env.VITE_API_CLIENT_SECRET as string;
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
 
-  // eslint-disable-next-line compat/compat
+
   const body = new URLSearchParams({
     token,
     token_type_hint: type,

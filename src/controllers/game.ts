@@ -33,7 +33,7 @@ const prepareAdd = async (
   input: string,
 ): Promise<void> => {
   add(target, input);
-  // eslint-disable-next-line compat/compat
+
   await new Promise((resolve) => {
     resolve('');
   });

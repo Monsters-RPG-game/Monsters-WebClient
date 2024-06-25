@@ -1,7 +1,7 @@
 // @TODO: delete all of this
 
 import React from 'react';
-import { IFightEntity } from '../types';
+import type { IFightEntity } from '../types';
 
 // import React from 'react';
 // import { attack } from '../communication';

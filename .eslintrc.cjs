@@ -22,8 +22,16 @@ module.exports = {
     'plugin:@typescript-eslint/strict',
     'prettier',
     'plugin:react-hooks/recommended',
+    'plugin:compat/recommended',
   ],
-  plugins: ['@typescript-eslint', 'eslint-plugin-prettier', 'react', 'jsx-a11y', 'react-refresh'],
+  plugins: [
+    '@typescript-eslint',
+    'eslint-plugin-prettier',
+    'react',
+    'jsx-a11y',
+    'react-refresh',
+    'eslint-plugin-compat',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
