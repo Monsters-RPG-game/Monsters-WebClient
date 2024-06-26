@@ -6,7 +6,7 @@ import Popup from '../components/Popup';
 import WebSocket from '../components/Websocket';
 import { initApp } from '../controllers';
 import { ECharacterState } from '../enums';
-import type { IUser, IUserProfile } from '../types';
+import type { IUserProfile } from '../types';
 import {
   useFightsStore,
   useHistoryStore,
@@ -17,13 +17,11 @@ import {
 } from '../zustand/store';
 import CombatStage from './CombatStage';
 
-interface Props {
-  account: IUser;
+interface IProps {
   profile: IUserProfile;
-  addProfile: (profile: IUserProfile) => void;
 }
 
-const Home: React.FC<Props> = ({ profile }) => {
+const Home: React.FC<IProps> = ({ profile }) => {
   const initHistory = useHistoryStore((state) => state.initHistory);
   const addMessages = useMessagesStore((state) => state.addMessages);
   const addLogs = useLogsStore((state) => state.setLogs);
