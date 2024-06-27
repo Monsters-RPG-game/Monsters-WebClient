@@ -7,7 +7,9 @@ import { useFightsStore, useProfileStore } from '../zustand/store';
 export default class Controller {
   private readonly _add: (target: string, message: string) => Promise<void>;
 
-  private _resolve: { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout } | undefined = undefined;
+  private _resolve:
+    | { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> }
+    | undefined = undefined;
 
   constructor(add: (target: string, message: string) => void) {
     this._add = (target: string, command: string): Promise<void> => this.prepareAdd(add, target, command);
@@ -17,11 +19,11 @@ export default class Controller {
 
   private _request: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined = undefined;
 
-  private get resolve(): { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout } {
-    return this._resolve as { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout };
+  private get resolve(): { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> } {
+    return this._resolve as { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> };
   }
 
-  private set resolve(val: { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout }) {
+  private set resolve(val: { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> }) {
     this._resolve = val;
   }
 
