@@ -82,8 +82,7 @@ const CombatStage: React.FC<{ combat: IFightEntity | undefined; fightModalHandle
   combat,
   fightModalHandler,
 }) => {
-  combat;
-  fightModalHandler;
+  console.log(combat, fightModalHandler);
   return <div>CombatStage</div>;
 };
 

@@ -7,8 +7,7 @@ import { useFightsStore, useProfileStore } from '../zustand/store';
 export default class Controller {
   private readonly _add: (target: string, message: string) => Promise<void>;
 
-  private _resolve: { action: (val: void | PromiseLike<void>) => void; timer: NodeJS.Timeout | null } | undefined =
-    undefined;
+  private _resolve: { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout } | undefined = undefined;
 
   constructor(add: (target: string, message: string) => void) {
     this._add = (target: string, command: string): Promise<void> => this.prepareAdd(add, target, command);
@@ -18,11 +17,11 @@ export default class Controller {
 
   private _request: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined = undefined;
 
-  private get resolve(): { action: (val: void | PromiseLike<void>) => void; timer: NodeJS.Timeout | null } {
-    return this._resolve as { action: (val: void | PromiseLike<void>) => void; timer: NodeJS.Timeout | null };
+  private get resolve(): { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout } {
+    return this._resolve as { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout };
   }
 
-  private set resolve(val: { action: (val: void | PromiseLike<void>) => void; timer: NodeJS.Timeout | null }) {
+  private set resolve(val: { action: (val: void | PromiseLike<void>) => void; timer?: NodeJS.Timeout }) {
     this._resolve = val;
   }
 
@@ -47,11 +46,10 @@ export default class Controller {
   }
 
   async init(): Promise<void> {
-
     return new Promise((resolve) => {
       const server = import.meta.env.VITE_API_WS_BACKEND as string;
       this.client = new WebSocket(server);
-      this.resolve = { action: resolve, timer: null };
+      this.resolve = { action: resolve };
       this.startListeners();
     });
   }
@@ -74,7 +72,6 @@ export default class Controller {
   }
 
   async send(message: ISocketOutMessage): Promise<ISocketMessage> {
-
     return new Promise((resolve) => {
       this.client.send(JSON.stringify(message));
       this.request = resolve;
@@ -158,7 +155,7 @@ export default class Controller {
       const { addCurrentFight } = useFightsStore.getState();
       setProfile({ ...profile!, state: message.state.state });
 
-      getActiveFight()
+      await getActiveFight()
         .then((state) => addCurrentFight(state.data.data[0]))
         .catch((error) => console.log(error));
     }
