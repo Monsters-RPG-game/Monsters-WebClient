@@ -48,7 +48,7 @@ const Home: React.FC<IProps> = ({ profile }) => {
   useEffect(() => {
     console.log('profileState');
     console.log(profileState);
-  }, [fights]);
+  }, [fights, profileState]);
 
   useEffect(() => {
     initApp(
