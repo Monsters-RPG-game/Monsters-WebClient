@@ -1,5 +1,7 @@
 // @TODO: Delete this, create new
 
+import type { IPortalProps } from '../types/portal';
+
 // import { useState } from 'react';
 // import type { AxiosResponse } from 'axios';
 // import * as dialogs from './ui/alert-dialog';
@@ -108,3 +110,32 @@
 // };
 
 // export default Portal;
+
+const Portal: React.FC<IPortalProps> = ({
+  className,
+  children,
+  openButton,
+  handleClose,
+  triggerFn,
+  setTodeleteAccountHandler,
+  isPortalOpen,
+  confirmButtonLabel,
+  cancelButtonLabel,
+  deleteButtonLabel,
+}) => {
+  console.log(
+    className,
+    children,
+    openButton,
+    handleClose,
+    triggerFn,
+    setTodeleteAccountHandler,
+    isPortalOpen,
+    confirmButtonLabel,
+    cancelButtonLabel,
+    deleteButtonLabel,
+  );
+  return <div>Portal</div>;
+};
+
+export default Portal;
