@@ -51,7 +51,12 @@ const Home: React.FC<IProps> = ({ profile }) => {
   }, [fights]);
 
   useEffect(() => {
-    initApp(addMessages, addLogs, profile, addFight).catch((err) => {
+    initApp(
+      addMessages,
+      //  addLogs
+      profile,
+      addFight,
+    ).catch((err) => {
       console.log('Cannot init app', err);
     });
   }, [addLogs, addFight, initHistory, addMessages, profile]);
