@@ -33,7 +33,7 @@ const prepareAdd = async (
   input: string,
 ): Promise<void> => {
   add(target, input);
-  // eslint-disable-next-line compat/compat
+
   await new Promise((resolve) => {
     resolve('');
   });
@@ -66,19 +66,19 @@ const getAvailableCommands = (
     default:
       return fight
         ? baseCommands
-          .filter((c) => (c.action as EUserActions) !== EUserActions.Choose)
-          .map((a) => {
-            if ((a.action as EUserActions) !== EUserActions.Attack) return a;
-            let enemyTeam: IFightTeam[] | undefined;
+            .filter((c) => (c.action as EUserActions) !== EUserActions.Choose)
+            .map((a) => {
+              if ((a.action as EUserActions) !== EUserActions.Attack) return a;
+              let enemyTeam: IFightTeam[] | undefined;
 
-            fight.states.current.teams.forEach((t) => {
-              if (!t.find((team) => team.character === userName)) {
-                enemyTeam = t;
-              }
-            });
+              fight.states.current.teams.forEach((t) => {
+                if (!t.find((team) => team.character === userName)) {
+                  enemyTeam = t;
+                }
+              });
 
-            return { ...a, target: enemyTeam ? enemyTeam.map((e) => e.character) : [] };
-          })
+              return { ...a, target: enemyTeam ? enemyTeam.map((e) => e.character) : [] };
+            })
         : baseCommands.filter((c) => (c.action as EUserActions) !== EUserActions.Choose);
   }
 };
@@ -170,7 +170,6 @@ const formatInput = (
 
   return preparedInput as [EUserActions, ...string[]];
 };
-
 
 export const newUserCommand = async (
   command: string,

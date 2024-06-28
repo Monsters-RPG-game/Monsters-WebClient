@@ -106,7 +106,7 @@ export const handleAttackEnemy = async (
       break;
   }
 
-  // eslint-disable-next-line compat/compat
+
   await Promise.all(
     data.data.logs.map(async (l) => {
       await add('System', `${l.character} ${prepareFightActionResponse(l.action)} ${l.target} for ${l.value}`);

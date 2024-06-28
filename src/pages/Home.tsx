@@ -1,58 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { initApp } from '../controllers';
-import { useFightsStore, useHistoryStore, useLogsStore, useMessagesStore, useProfileStore, useWebsocketStore } from '../zustand/store';
-import type { IUserProfile } from '../types';
-import WebSocket from '../components/Websocket';
+import { leaveFight } from '../communication';
 import Canvas from '../components/Canvas';
 import Popup from '../components/Popup';
-import { leaveFight } from '../communication';
+import WebSocket from '../components/Websocket';
+import { initApp } from '../controllers';
 import { ECharacterState } from '../enums';
-import images from '../constants/images';
+import type { IUserProfile } from '../types';
+import {
+  useFightsStore,
+  useHistoryStore,
+  useLogsStore,
+  useMessagesStore,
+  useProfileStore,
+  useWebsocketStore,
+} from '../zustand/store';
 import CombatStage from './CombatStage';
 
-const Home: React.FC<{
+interface IProps {
   profile: IUserProfile;
-}> = ({ profile }) => {
+}
+
+const Home: React.FC<IProps> = ({ profile }) => {
   const initHistory = useHistoryStore((state) => state.initHistory);
   const addMessages = useMessagesStore((state) => state.addMessages);
   const addLogs = useLogsStore((state) => state.setLogs);
   const addFight = useFightsStore((state) => state.addCurrentFight);
-  const socketController = useWebsocketStore(state => state.controller);
+  const socketController = useWebsocketStore((state) => state.controller);
   const profileState = useProfileStore((state) => state.profile);
   const fights = useFightsStore((state) => state.fights);
-const playerActiveFight =  useFightsStore((state)=>state.activeFight);
+  const playerActiveFight = useFightsStore((state) => state.activeFight);
 
+  const { mutate } = useMutation({
+    mutationFn: () => {
+      return leaveFight();
+    },
+    onSuccess: () => {
+      const { profile, setProfile } = useProfileStore.getState();
+      setProfile({ ...profile!, state: 'Map' as ECharacterState });
+    },
+  });
 
-
-
-const {mutate}=useMutation({
-  mutationFn:()=>{
-    return leaveFight();
-  },
-  onSuccess:()=>{
-    const {profile,setProfile}= useProfileStore.getState();
-    setProfile({...profile, state:'MAP'});
-  }
-});
-
-const fightModalHandler=():void=>{
-  mutate();
-};
-
-
-
-
-useEffect(()=>{
-  console.log('profileState');
-console.log(profileState);
-},[fights]);
+  const fightModalHandler = (): void => {
+    mutate();
+  };
 
   useEffect(() => {
-    initApp(addMessages, addLogs, profile, addFight)
-      .catch((err) => {
-        console.log('Cannot init app', err);
-      });
+    console.log('profileState');
+    console.log(profileState);
+  }, [fights, profileState]);
+
+  useEffect(() => {
+    initApp(
+      addMessages,
+      //  addLogs
+      profile,
+      addFight,
+    ).catch((err) => {
+      console.log('Cannot init app', err);
+    });
   }, [addLogs, addFight, initHistory, addMessages, profile]);
 
   return (
@@ -60,9 +66,11 @@ console.log(profileState);
       <WebSocket />
       {socketController ? <Canvas /> : null}
 
-{profileState?.state===ECharacterState.Fight &&<Popup >
-<CombatStage combat={playerActiveFight} fightModalHandler={fightModalHandler} />
-</Popup>}
+      {profileState?.state === ECharacterState.Fight && (
+        <Popup>
+          <CombatStage combat={playerActiveFight} fightModalHandler={fightModalHandler} />
+        </Popup>
+      )}
     </div>
   );
 };

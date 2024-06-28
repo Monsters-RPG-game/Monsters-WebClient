@@ -7,7 +7,6 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // eslint-disable-next-line compat/compat
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     if (!code) {

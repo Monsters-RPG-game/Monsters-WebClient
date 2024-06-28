@@ -14,7 +14,7 @@ export default class MainScene extends Phaser.Scene {
 
   private _player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody | null = null;
 
-  private _lastPosition: { x: number, y: number } = { x: 0, y: 0 };
+  private _lastPosition: { x: number; y: number } = { x: 0, y: 0 };
 
   private _shouldSend: boolean = true;
 
@@ -36,11 +36,11 @@ export default class MainScene extends Phaser.Scene {
     this._cursors = val;
   }
 
-  private get lastPosition(): { x: number, y: number } {
+  private get lastPosition(): { x: number; y: number } {
     return this._lastPosition;
   }
 
-  private set lastPosition(val: { x: number, y: number }) {
+  private set lastPosition(val: { x: number; y: number }) {
     this._lastPosition = val;
   }
 
@@ -51,7 +51,6 @@ export default class MainScene extends Phaser.Scene {
   private get shouldSend(): boolean {
     return this._shouldSend;
   }
-
 
   private get canMove(): boolean {
     return this._canMove;
@@ -77,16 +76,15 @@ export default class MainScene extends Phaser.Scene {
     this._player = val;
   }
 
-
   constructor() {
     super({
       key: 'MainMap',
       physics: {
         default: 'arcade',
         arcade: {
-          gravity: { y: 0, x: 0 }
-        }
-      }
+          gravity: { y: 0, x: 0 },
+        },
+      },
     });
 
     this.cursors = null;
@@ -96,7 +94,10 @@ export default class MainScene extends Phaser.Scene {
 
   preload(): void {
     this.load.image('tiles', tileset);
-    this.load.tilemapTiledJSON('map', JSON.parse(sessionStorage.getItem('mainMap') as string) as Record<string, unknown>);
+    this.load.tilemapTiledJSON(
+      'map',
+      JSON.parse(sessionStorage.getItem('mainMap') as string) as Record<string, unknown>,
+    );
     this.load.atlas('atlas', characterImage, characterData);
   }
 
@@ -114,13 +115,13 @@ export default class MainScene extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
     aboveLayer.setDepth(10);
 
-    const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point')!;
-    this.player = this.physics.add.sprite(spawnPoint.x as number, spawnPoint.y as number, 'atlas', 'misa-front')
+    const spawnPoint = map.findObject('Objects', (obj) => obj.name === 'Spawn Point')!;
+    this.player = this.physics.add
+      .sprite(spawnPoint.x as number, spawnPoint.y as number, 'atlas', 'misa-front')
       .setSize(30, 40)
       .setOffset(0, 24);
 
-    this.physics.add.collider(this.player,
-      worldLayer);
+    this.physics.add.collider(this.player, worldLayer);
 
     const location = useLocationStore.getState();
     this.player.x = location.x * map.tileWidth;
@@ -128,7 +129,7 @@ export default class MainScene extends Phaser.Scene {
 
     this.lastPosition = {
       x: this.player.x,
-      y: this.player.y
+      y: this.player.y,
     };
 
     const { anims } = this;
@@ -138,10 +139,10 @@ export default class MainScene extends Phaser.Scene {
         prefix: 'misa-left-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3
+        zeroPad: 3,
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: -1,
     });
     anims.create({
       key: 'misa-right-walk',
@@ -149,10 +150,10 @@ export default class MainScene extends Phaser.Scene {
         prefix: 'misa-right-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3
+        zeroPad: 3,
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: -1,
     });
     anims.create({
       key: 'misa-front-walk',
@@ -160,10 +161,10 @@ export default class MainScene extends Phaser.Scene {
         prefix: 'misa-front-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3
+        zeroPad: 3,
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: -1,
     });
     anims.create({
       key: 'misa-back-walk',
@@ -171,10 +172,10 @@ export default class MainScene extends Phaser.Scene {
         prefix: 'misa-back-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3
+        zeroPad: 3,
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: -1,
     });
 
     const camera = this.cameras.main;
@@ -238,7 +239,12 @@ export default class MainScene extends Phaser.Scene {
     const width = this.map?.tileWidth ?? 1;
 
     // Replace hardcoded width of 32 with map width
-    if (((this.player!.x / width) - (this.lastPosition.x / width) > 1) || (this.lastPosition.x / width) - (this.player!.x / width) > 1 || (this.player!.y / width) - (this.lastPosition.y / width) > 1 || (this.lastPosition.y / width) - (this.player!.y / width) > 1) {
+    if (
+      this.player!.x / width - this.lastPosition.x / width > 1 ||
+      this.lastPosition.x / width - this.player!.x / width > 1 ||
+      this.player!.y / width - this.lastPosition.y / width > 1 ||
+      this.lastPosition.y / width - this.player!.y / width > 1
+    ) {
       // Sending websocket request to move will not work, if user does not move 1 "field", which is 32 px on main map.
       if (this.canMove) {
         this.lastPosition.x = this.player!.x;
@@ -249,24 +255,27 @@ export default class MainScene extends Phaser.Scene {
         this.shouldSend = false;
         // This does not handle negative reponses from backend. Add them
         const controller = useWebsocketStore.getState().controller!;
-        controller.send({
-          target: 'movement',
-          subTarget: 'move',
-          payload: {
-            x: parseInt((this.player!.x / 32).toFixed(0), 10),
-            y: parseInt((this.player!.y / 32).toFixed(0), 10)
-          }
-        }).then((callback) => {
-          this.canMove = true;
-          if (callback.state?.state === ECharacterState.Fight) {
-            console.log('Initialized fight');
-          }
-          return undefined;
-        }).catch(err => {
-          this.canMove = true;
-          console.log('Got err on movement');
-          console.log(err);
-        });
+        controller
+          .send({
+            target: 'movement',
+            subTarget: 'move',
+            payload: {
+              x: parseInt((this.player!.x / 32).toFixed(0), 10),
+              y: parseInt((this.player!.y / 32).toFixed(0), 10),
+            },
+          })
+          .then((callback) => {
+            this.canMove = true;
+            if (callback.state?.state === ECharacterState.Fight) {
+              console.log('Initialized fight');
+            }
+            return undefined;
+          })
+          .catch((err) => {
+            this.canMove = true;
+            console.log('Got err on movement');
+            console.log(err);
+          });
       }
     } else if (param === 'x') {
       this.player!.setVelocityX(up ? speed : -speed);
@@ -275,4 +284,3 @@ export default class MainScene extends Phaser.Scene {
     }
   }
 }
-

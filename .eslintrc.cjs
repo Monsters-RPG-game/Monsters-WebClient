@@ -22,8 +22,16 @@ module.exports = {
     'plugin:@typescript-eslint/strict',
     'prettier',
     'plugin:react-hooks/recommended',
+    'plugin:compat/recommended',
   ],
-  plugins: ['@typescript-eslint', 'eslint-plugin-prettier', 'react', 'jsx-a11y', 'react-refresh'],
+  plugins: [
+    '@typescript-eslint',
+    'eslint-plugin-prettier',
+    'react',
+    'jsx-a11y',
+    'react-refresh',
+    'eslint-plugin-compat',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
@@ -32,6 +40,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     createDefaultProgram: true,
   },
+  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts'],
   settings: {
     'import/resolver': {
       typescript: {},

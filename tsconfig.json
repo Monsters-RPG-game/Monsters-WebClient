@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/components/Navbar.tsx", "vite.config.ts"],
+  "include": ["src"],
   "references": [
     {
       "path": "./tsconfig.node.json"

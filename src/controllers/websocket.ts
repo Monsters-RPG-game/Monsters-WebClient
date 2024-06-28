@@ -1,15 +1,15 @@
-import { error } from 'console';
-import type { ISocketMessage, ISocketOutMessage, ISocketNewMessage } from '../types';
+import { getActiveFight } from '../communication';
 import { ECharacterState, ESocketType, ETokenNames } from '../enums';
 import { Cookies } from '../tools';
+import type { ISocketMessage, ISocketNewMessage, ISocketOutMessage } from '../types';
 import { useFightsStore, useProfileStore } from '../zustand/store';
-import { getActiveFight } from '../communication';
-
 
 export default class Controller {
   private readonly _add: (target: string, message: string) => Promise<void>;
 
-  private _resolve: { action: ((val: void | PromiseLike<void>) => void), timer: NodeJS.Timeout | null } | undefined = undefined;
+  private _resolve:
+    | { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> }
+    | undefined = undefined;
 
   constructor(add: (target: string, message: string) => void) {
     this._add = (target: string, command: string): Promise<void> => this.prepareAdd(add, target, command);
@@ -19,11 +19,11 @@ export default class Controller {
 
   private _request: ((value: Promise<ISocketMessage> | ISocketMessage) => void) | undefined = undefined;
 
-  private get resolve(): { action: (val: void | PromiseLike<void>) => void, timer: NodeJS.Timeout | null } {
-    return this._resolve as { action: (val: void | PromiseLike<void>) => void, timer: NodeJS.Timeout | null };
+  private get resolve(): { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> } {
+    return this._resolve as { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> };
   }
 
-  private set resolve(val: { action: (val: void | PromiseLike<void>) => void, timer: NodeJS.Timeout | null }) {
+  private set resolve(val: { action: (val: void | PromiseLike<void>) => void; timer?: ReturnType<typeof setTimeout> }) {
     this._resolve = val;
   }
 
@@ -43,17 +43,15 @@ export default class Controller {
     this._request = value;
   }
 
-
   private get add(): (target: string, message: string) => Promise<void> {
     return this._add;
   }
 
   async init(): Promise<void> {
-    // eslint-disable-next-line compat/compat
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const server = import.meta.env.VITE_API_WS_BACKEND as string;
       this.client = new WebSocket(server);
-      this.resolve = { action: resolve, timer: null };
+      this.resolve = { action: resolve };
       this.startListeners();
     });
   }
@@ -76,8 +74,7 @@ export default class Controller {
   }
 
   async send(message: ISocketOutMessage): Promise<ISocketMessage> {
-    // eslint-disable-next-line compat/compat
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.client.send(JSON.stringify(message));
       this.request = resolve;
     });
@@ -123,9 +120,9 @@ export default class Controller {
       case ESocketType.Error:
         await this.handleError(parsed.payload as Error);
         break;
-        case ESocketType.Success:
-          await this.handleMapMovement(parsed as ISocketMessage);
-          break;
+      case ESocketType.Success:
+        await this.handleMapMovement(parsed as ISocketMessage);
+        break;
       default:
         console.log('Unknown websocket message');
         console.log(parsed);
@@ -141,8 +138,8 @@ export default class Controller {
         target: 'authorization',
         subTarget: '',
         payload: {
-          key: access
-        }
+          key: access,
+        },
       });
     } else {
       console.log('Got error from server', error);
@@ -152,22 +149,19 @@ export default class Controller {
   private async handleUserMessage(message: ISocketNewMessage): Promise<void> {
     await this.add('System', 'Received new message');
     await this.add(message.sender, message.body);
-
-
-  };
+  }
 
   private async handleMapMovement(message: ISocketMessage): Promise<void> {
+    if (message?.state?.state === ECharacterState.Fight) {
+      const { profile, setProfile } = useProfileStore.getState();
+      const { addCurrentFight } = useFightsStore.getState();
+      setProfile({ ...profile!, state: message.state.state });
 
-
-    if(message?.state?.state ===ECharacterState.Fight){
-
-      const {profile,setProfile}= useProfileStore.getState();
-      const {addCurrentFight}=useFightsStore.getState();
-      setProfile({...profile,state:message.state.state});
-
-       getActiveFight().then((state)=> addCurrentFight(state.data.data[0])).catch(error=>console.log(error));
+      await getActiveFight()
+        .then((state) => addCurrentFight(state.data.data[0]))
+        .catch((error) => console.log(error));
     }
-  };
+  }
 
   private async prepareAdd(
     add: (target: string, command: string) => void,
@@ -175,10 +169,9 @@ export default class Controller {
     input: string,
   ): Promise<void> {
     add(target, input);
-    // eslint-disable-next-line compat/compat
-    await new Promise(resolve => {
+
+    await new Promise((resolve) => {
       resolve('');
     });
   }
 }
-

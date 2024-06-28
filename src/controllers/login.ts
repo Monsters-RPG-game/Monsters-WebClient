@@ -1,8 +1,8 @@
-import Cookies from '../tools/cookies';
-import type { IFightEntity, ILog, IPreparedMessagesBody, IUserProfile } from '../types';
-import { useAccountStore, useProfileStore } from '../zustand/store';
 import { getActiveFight, getMessages, getUserLogin, getUserProfile, login } from '../communication';
 import { ECharacterState } from '../enums';
+import Cookies from '../tools/cookies';
+import type { IFightEntity, IPreparedMessagesBody, IUserProfile } from '../types';
+import { useAccountStore, useProfileStore } from '../zustand/store';
 
 export const loginUser = async (): Promise<void> => {
   const { setAccount } = useAccountStore.getState();
@@ -27,7 +27,8 @@ export const handleLogin = async (code: string): Promise<void> => {
 
 export const initApp = async (
   addMessages: (messages: Record<string, IPreparedMessagesBody>) => void,
-  addLogs: (logs: ILog[]) => void,
+  // addLogs: (logs: ILog[]) => void,
+  // @TODO: Create logic utilizing addLogs function
   profile: IUserProfile,
   addFight: (data: IFightEntity) => void,
 ): Promise<void> => {
