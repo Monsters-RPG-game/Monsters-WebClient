@@ -70,11 +70,9 @@ const Portal: React.FC<IPortalProps> = ({
                   className=" bg-rose-800 hover:bg-rose-700 my-2"
                   onClick={
                     setTodeleteAccountHandler
-                      ? () =>
-                          setTodeleteAccountHandler(
-                            async () => await confirmDeleteAccountHandler(true, setTodeleteAccount),
-                          )
-                      : () => {}
+                      ? (): void | Promise<void> =>
+                          setTodeleteAccountHandler(async () => confirmDeleteAccountHandler(true, setTodeleteAccount))
+                      : (): void => {}
                   }
                 >
                   {deleteButtonLabel}
