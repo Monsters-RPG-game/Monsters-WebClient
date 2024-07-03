@@ -3,7 +3,7 @@ import CreditstSection from './CreditstSection';
 import Home from './Home';
 import InitializeProfileLayout from './InitializeProfileLayout';
 import Inventory from './Inventory';
-import LandingPage from './LandingPage';
+import LandingPage from './landingPage/LandingPage';
 import Login from './Login';
 import Profile from './Profile';
 import Races from './Races';
