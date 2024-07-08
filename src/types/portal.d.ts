@@ -1,14 +1,10 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, SetStateAction } from 'react';
 
 export type IPortalProps = {
-  children: ReactNode;
-  openButton: ReactNode;
-  isPortalOpen: boolean;
+  title: string;
   className: string;
-  handleClose: () => void;
-  // setTodeleteAccountHandler?: (cb: (() => void) | (() => Promise<void>)) => void | Promise<void>;
-  // triggerFn: (...params: unknown[]) => Promise<void>;
-  // confirmButtonLabel: string;
-  // cancelButtonLabel: string;
-  // deleteButtonLabel: string;
+  children: ReactNode;
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
+  openButton?: ReactNode;
 };

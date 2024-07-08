@@ -25,12 +25,7 @@ const LandingPage: React.FC = () => {
       <RaceFeatureContainer />
       <ClassFeatureContainer />
       <Footer />
-      {isPrivacyPopupVisible && (
-        <CookiePortal
-          isPrivacyPopupVisible={isPrivacyPopupVisible}
-          setIsPrivacyPopupVisible={setIsPrivacyPopupVisible}
-        />
-      )}
+      {isPrivacyPopupVisible && <CookiePortal open={isPrivacyPopupVisible} setOpen={setIsPrivacyPopupVisible} />}
     </div>
   );
 };
