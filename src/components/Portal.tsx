@@ -6,10 +6,12 @@ const Portal: React.FC<IPortalProps> = ({ title, className, children, open, setO
     <dialogs.AlertDialog open={open} onOpenChange={setOpen}>
       {openButton && <dialogs.AlertDialogTrigger>{openButton}</dialogs.AlertDialogTrigger>}
       <dialogs.AlertDialogContent className={className}>
-        <dialogs.AlertDialogTitle>
-          <div className="text-slate-600 font-heroSectionFont text-3xl font-bold tracking-tight">{title}</div>
-        </dialogs.AlertDialogTitle>
-        <div className="h-[100%]">{children}</div>
+        <div className=" relative flex flex-col justify-evenly items-center align  px-2 md:px-10 lg:px-20">
+          <dialogs.AlertDialogTitle>
+            <div className="text-slate-600 font-heroSectionFont text-3xl font-bold tracking-tight">{title}</div>
+          </dialogs.AlertDialogTitle>
+          <dialogs.AlertDialogDescription>{children}</dialogs.AlertDialogDescription>
+        </div>
         <dialogs.AlertDialogCancel
           className=" absolute top-0 right-0 bg-transparent text-slate-400 my-2 border-none hover:bg-transparent hover:text-slate-300"
           onClick={() => {
