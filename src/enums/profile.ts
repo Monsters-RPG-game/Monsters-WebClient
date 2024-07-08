@@ -1,4 +1,4 @@
 export enum ECharacterState {
-  Fight = 'Fight',
-  Map = 'Map',
+  Fight = 'fight',
+  Map = 'map',
 }
