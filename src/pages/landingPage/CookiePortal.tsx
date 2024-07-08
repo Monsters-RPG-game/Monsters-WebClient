@@ -5,21 +5,16 @@ import Portal from '../../components/Portal';
 import * as dialogs from '../../components/ui/alert-dialog';
 
 interface ICookiePortal {
-  isPrivacyPopupVisible: boolean;
-  setIsPrivacyPopupVisible: React.Dispatch<SetStateAction<boolean>>;
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const CookiePortal: React.FC<ICookiePortal> = ({ isPrivacyPopupVisible, setIsPrivacyPopupVisible }) => {
+const CookiePortal: React.FC<ICookiePortal> = ({ open, setOpen }) => {
   return (
-    <Portal
-      handleClose={() => setIsPrivacyPopupVisible((prevState: boolean) => !prevState)}
-      className="bg-slate-100 "
-      isPortalOpen={isPrivacyPopupVisible}
-    >
+    <Portal className="bg-slate-100 " open={open} setOpen={setOpen} title="We use cookies">
       <div className="h-[100%] relative">
         <div className="flex flex-col justify-evenly items-center h-[95%] px-2 md:px-10 lg:px-20">
           <PiCookieDuotone className="text-blue-400" size="130" />
-          <h2 className="text-slate-600 font-heroSectionFont text-3xl font-bold tracking-tight">We use cookies</h2>
           <p className="text-gray-700 text-base leading-7">
             We would like to inform you that our website uses cookies solely for account validation. Cookies are
             essential to ensure the security of your account and customize content according to your preferences. If you
@@ -32,7 +27,7 @@ const CookiePortal: React.FC<ICookiePortal> = ({ isPrivacyPopupVisible, setIsPri
                 className="absolute right-[5%] bottom-[1%] bg-blue-600 hover:bg-blue-500"
                 onClick={() => {
                   localStorage.setItem('privacyPolicy', '1');
-                  setIsPrivacyPopupVisible(false);
+                  setOpen(false);
                 }}
               >
                 Accept
