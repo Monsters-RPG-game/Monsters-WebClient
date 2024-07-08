@@ -6,7 +6,7 @@ const Portal: React.FC<IPortalProps> = ({ title, className, children, open, setO
     <dialogs.AlertDialog open={open} onOpenChange={setOpen}>
       {openButton && <dialogs.AlertDialogTrigger>{openButton}</dialogs.AlertDialogTrigger>}
       <dialogs.AlertDialogContent className={className}>
-        <div className=" relative flex flex-col justify-evenly items-center align  px-2 md:px-10 lg:px-20">
+        <div className=" relative flex flex-col justify-evenly items-center">
           <dialogs.AlertDialogTitle>
             <div className="text-slate-600 font-heroSectionFont text-3xl font-bold tracking-tight">{title}</div>
           </dialogs.AlertDialogTitle>
