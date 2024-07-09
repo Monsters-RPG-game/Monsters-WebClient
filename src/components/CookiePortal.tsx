@@ -2,7 +2,12 @@ import type { SetStateAction } from 'react';
 import React from 'react';
 import { PiCookieDuotone } from 'react-icons/pi';
 import Portal from './Portal';
-import * as dialogs from './ui/alert-dialog';
+import { PortalAction } from './PortalAction';
+
+const CookieInfoClosed = (setOpen: React.Dispatch<SetStateAction<boolean>>): void => {
+  localStorage.setItem('privacyPolicy', '1');
+  setOpen(false);
+};
 
 interface ICookiePortal {
   open: boolean;
@@ -20,19 +25,7 @@ const CookiePortal: React.FC<ICookiePortal> = ({ open, setOpen }) => {
           agree, leave this page, otherwise, click <span className="font-bold text-blue-400">&quot;Accept&quot;</span>{' '}
           to continue using our website.
         </p>
-        <div className="flex flex-col-reverse gap-2 mt-3 md:flex-row h-[10%]">
-          <div className="flex flex-col w-3/4 mx-auto md:flex-row md:justify-end ">
-            <dialogs.AlertDialogAction
-              className="absolute right-[5%] bottom-[0] bg-blue-600 hover:bg-blue-500"
-              onClick={() => {
-                localStorage.setItem('privacyPolicy', '1');
-                setOpen(false);
-              }}
-            >
-              Accept
-            </dialogs.AlertDialogAction>
-          </div>
-        </div>
+        <PortalAction cb={() => CookieInfoClosed(setOpen)}>Accept</PortalAction>
       </div>
     </Portal>
   );
