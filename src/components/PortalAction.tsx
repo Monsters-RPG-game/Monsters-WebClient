@@ -10,9 +10,7 @@ export const PortalAction: React.FC<IActionProps> = ({ cb, children }) => {
   return (
     <dialogs.AlertDialogAction
       className="flex flex-col-reverse  gap-2 mt-3 md:flex-row  h-[10%] bg-blue-600 hover:bg-blue-500"
-      onClick={() => {
-        cb();
-      }}
+      onClick={cb}
     >
       {children}
     </dialogs.AlertDialogAction>
