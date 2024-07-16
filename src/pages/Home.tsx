@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { useMutation } from 'react-query';
-import { attack, leaveFight } from '../communication';
 import Canvas from '../components/Canvas';
 import Popup from '../components/Popup';
 import WebSocket from '../components/Websocket';
@@ -31,34 +29,15 @@ const Home: React.FC<IProps> = ({ profile }) => {
   const fights = useFightsStore((state) => state.fights);
   const playerActiveFight = useFightsStore((state) => state.activeFight);
 
-  const { mutate: leave } = useMutation({
-    mutationFn: () => {
-      return leaveFight();
-    },
-    onSuccess: () => {
-      const { profile, setProfile } = useProfileStore.getState();
-      setProfile({ ...profile!, state: 'Map' as ECharacterState });
-    },
-  });
-
-  const { mutate: action } = useMutation({
-    mutationFn: (target: string) => {
-      return attack(target);
-    },
-    onSuccess: () => {
-      const { profile, setProfile } = useProfileStore.getState();
-      setProfile({ ...profile!, state: 'Map' as ECharacterState });
-    },
-  });
   // @TODO: revamp logic in fightMOdalHandler
-  const fightModalHandler = (input: 'action' | 'leave', target: string): void => {
-    if (input === 'action') {
-      action(target);
-    }
-    if (input === 'leave') {
-      leave();
-    }
-  };
+  // const fightModalHandler = (input: 'action' | 'leave', target: string): void => {
+  //   if (input === 'action') {
+  //     action(target);
+  //   }
+  //   if (input === 'leave') {
+  //     leave();
+  //   }
+  // };
 
   useEffect(() => {
     console.log('profileState: ', profileState);
@@ -83,7 +62,7 @@ const Home: React.FC<IProps> = ({ profile }) => {
 
       {profileState?.state === ECharacterState.Fight && (
         <Popup>
-          <CombatStage combat={playerActiveFight} fightModalHandler={fightModalHandler} />
+          <CombatStage />
         </Popup>
       )}
     </div>
