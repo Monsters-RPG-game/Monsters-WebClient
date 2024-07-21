@@ -39,6 +39,8 @@ export const initApp = async (
 
   if (profile.state === ECharacterState.Fight) {
     const fight = await getActiveFight();
+    console.log('fights in initApp: ', fight.data.data[0]);
+
     addFight(fight.data.data[0]);
   }
 };

@@ -39,7 +39,6 @@ export const attack = async (target: string): Promise<AxiosResponse<types.IAttac
 
 export const getActiveFight = async (): Promise<AxiosResponse<types.IGetActiveFight>> => {
   try {
-
     const queryParams = new URLSearchParams({
       active: 'true',
     }).toString();
@@ -58,7 +57,6 @@ export const sendToLoginPage = async (): Promise<void> => {
   const challenge = await generateCodeChallengeFromVerifier(verifier);
   sessionStorage.setItem('verifier', verifier);
 
-
   const queryParams = new URLSearchParams({
     client_id: clientId,
     response_type: 'code',
@@ -75,7 +73,6 @@ export const sendToLogoutPage = (): void => {
   const redirectUrl = import.meta.env.VITE_API_HOME as string;
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
   const server = import.meta.env.VITE_API_BACKEND as string;
-
 
   const params = new URLSearchParams({
     post_logout_redirect_uri: redirectUrl,
@@ -125,7 +122,6 @@ export const login = async (code: string): Promise<AxiosResponse<types.IGetToken
   const verifier = sessionStorage.getItem('verifier') as string;
   sessionStorage.removeItem('verifier');
 
-
   const body = new URLSearchParams({
     client_id: clientId,
     client_secret: clientSecret,
@@ -145,7 +141,6 @@ export const login = async (code: string): Promise<AxiosResponse<types.IGetToken
 export const revokeToken = async (token: string, type: ETokenType): Promise<AxiosResponse<types.IDefaultResponse>> => {
   const clientSecret = import.meta.env.VITE_API_CLIENT_SECRET as string;
   const clientId = import.meta.env.VITE_API_CLIENT_ID as string;
-
 
   const body = new URLSearchParams({
     token,

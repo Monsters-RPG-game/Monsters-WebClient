@@ -26,23 +26,6 @@ const Home: React.FC<IProps> = ({ profile }) => {
   const addFight = useFightsStore((state) => state.addCurrentFight);
   const socketController = useWebsocketStore((state) => state.controller);
   const profileState = useProfileStore((state) => state.profile);
-  const fights = useFightsStore((state) => state.fights);
-  const playerActiveFight = useFightsStore((state) => state.activeFight);
-
-  // @TODO: revamp logic in fightMOdalHandler
-  // const fightModalHandler = (input: 'action' | 'leave', target: string): void => {
-  //   if (input === 'action') {
-  //     action(target);
-  //   }
-  //   if (input === 'leave') {
-  //     leave();
-  //   }
-  // };
-
-  useEffect(() => {
-    console.log('profileState: ', profileState);
-    console.log('fights: ', fights);
-  }, [fights, profileState]);
 
   useEffect(() => {
     initApp(

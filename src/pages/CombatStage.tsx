@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { attack, leaveFight } from '../communication';
 import type { ECharacterState } from '../enums';
-import { useProfileStore } from '../zustand/store';
+import { useFightsStore, useProfileStore } from '../zustand/store';
 
 const CombatStage: React.FC = () => {
-  // const playerActiveFight = useFightsStore((state) => state.activeFight);
+  const fights = useFightsStore((state) => state.fights);
+  const playerActiveFight = useFightsStore((state) => state.activeFight);
+
+  useEffect(() => {
+    console.log('fights: ', fights);
+    console.log('playerActiveFight: ', playerActiveFight);
+  }, [playerActiveFight]);
 
   const { mutate: leave } = useMutation({
     mutationFn: () => {
@@ -25,11 +31,15 @@ const CombatStage: React.FC = () => {
     },
     onSuccess: () => {},
   });
-
+  if (!playerActiveFight) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
       <div>CombatStage</div>
+      <div>combat</div>
       <button
+        className="flex bottom"
         type="button"
         onClick={() => {
           leave();

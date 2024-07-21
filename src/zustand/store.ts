@@ -46,6 +46,7 @@ export const useFightsStore = create<types.IFightStore>((set) => ({
   activeFight: undefined,
   fights: [],
   addCurrentFight: (data): void => {
+    console.log(data);
     set(() => ({
       activeFight: data,
     }));
@@ -74,7 +75,7 @@ export const useWebsocketStore = create<types.IWebsocketStore>((set) => ({
   controller: undefined,
   addController: (output): void =>
     set(() => ({
-      controller: output
+      controller: output,
     })),
 }));
 
@@ -86,6 +87,6 @@ export const useLocationStore = create<types.ILocationStore>((set) => ({
     set(() => ({
       x: data.x,
       y: data.y,
-      map: data.map
+      map: data.map,
     })),
 }));
