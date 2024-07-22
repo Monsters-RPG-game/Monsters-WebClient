@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { attack, leaveFight } from '../communication';
+import { Combat } from '../components/combat/Combat';
+import { CombatUi } from '../components/combat/CombatUi';
 import type { ECharacterState } from '../enums';
 import { useFightsStore, useProfileStore } from '../zustand/store';
-import { Combat } from '../components/combat/Combat';
 
 const CombatStage: React.FC = () => {
   const fights = useFightsStore((state) => state.fights);
@@ -41,24 +42,7 @@ const CombatStage: React.FC = () => {
     <>
       <div>CombatStage</div>
       <Combat fight={playerActiveFight} setTarget={setTarget} />
-      <button
-        className="absolute bottom-20"
-        type="button"
-        onClick={() => {
-          leave();
-        }}
-      >
-        Leave
-      </button>
-      <button
-        className="absolute bottom-20"
-        type="button"
-        onClick={() => {
-          action(target);
-        }}
-      >
-        Attack
-      </button>
+      <CombatUi leave={leave} action={action} target={target} />
     </>
   );
 };
