@@ -42,7 +42,7 @@ const CombatStage: React.FC = () => {
       <div>CombatStage</div>
       <Combat fight={playerActiveFight} setTarget={setTarget} />
       <button
-        className="flex bottom"
+        className="absolute bottom-20"
         type="button"
         onClick={() => {
           leave();
@@ -51,6 +51,7 @@ const CombatStage: React.FC = () => {
         Leave
       </button>
       <button
+        className="absolute bottom-20"
         type="button"
         onClick={() => {
           action(target);
