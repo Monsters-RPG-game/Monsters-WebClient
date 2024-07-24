@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import Canvas from '../components/Canvas';
-import Popup from '../components/Popup';
 import WebSocket from '../components/Websocket';
 import { initApp } from '../controllers';
 import { ECharacterState } from '../enums';
@@ -41,13 +40,7 @@ const Home: React.FC<IProps> = ({ profile }) => {
   return (
     <div className="h-full w-full flex justify-center  ">
       <WebSocket />
-      {socketController ? <Canvas /> : null}
-
-      {profileState?.state === ECharacterState.Fight && (
-        <Popup>
-          <CombatStage />
-        </Popup>
-      )}
+      {socketController ? (profileState?.state === ECharacterState.Fight && <CombatStage />) || <Canvas /> : null}
     </div>
   );
 };
