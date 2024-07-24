@@ -6,10 +6,13 @@ const CombatActor: React.FC<{
   side: 'enemy' | 'attacker';
   setTarget: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ actorData, side, setTarget }) => {
-  const color = side === 'enemy' ? 'red' : 'lime-500';
+  const className =
+    side === 'enemy'
+      ? 'border-transparent border-2 hover:border-red'
+      : 'border-transparent border-2 hover:border-lime-500';
   return (
     <div
-      className={`border-transparent border-2 hover:border-${color}`}
+      className={className}
       onClick={() => {
         setTarget(actorData.character);
       }}
