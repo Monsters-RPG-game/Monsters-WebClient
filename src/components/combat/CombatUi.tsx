@@ -7,7 +7,7 @@ const CombatUi: React.FC<{ leave: () => void; action: (target: string) => void; 
   target,
 }) => {
   return (
-    <div className="absolute flex-row bottom-20 space-x-2">
+    <div className="h-[25svh] self-center space-x-2">
       <CombatBtn
         btnFc={() => {
           leave();

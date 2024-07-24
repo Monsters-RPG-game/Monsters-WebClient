@@ -10,13 +10,8 @@ const CombatTeam: React.FC<{
   return (
     <div className={`${(side === 'enemy' && 'absolute right-10') || (side === 'attacker' && 'absolute left-10')}`}>
       {fight.states.current[`${side}`].map((actor: IFightTeam) => (
-        <div
-          key={actor.character}
-          onClick={() => {
-            setTarget(actor.character);
-          }}
-        >
-          <CombatActor actorData={actor} />
+        <div key={actor.character}>
+          <CombatActor side={side} setTarget={setTarget} actorData={actor} />
         </div>
       ))}
     </div>

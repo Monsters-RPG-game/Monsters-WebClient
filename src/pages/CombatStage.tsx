@@ -5,8 +5,17 @@ import { Combat } from '../components/combat/Combat';
 import { CombatUi } from '../components/combat/CombatUi';
 import type { ECharacterState } from '../enums';
 import { useFightsStore, useProfileStore } from '../zustand/store';
+import images from '../constants/images';
 
 const CombatStage: React.FC = () => {
+  const BannerImg = {
+    backgroundImage: `url(${images.CombatSceneImage})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    height: '100%',
+    width: '100%',
+  };
   const fights = useFightsStore((state) => state.fights);
   const playerActiveFight = useFightsStore((state) => state.activeFight);
   const [target, setTarget] = useState<string>('');
@@ -39,11 +48,10 @@ const CombatStage: React.FC = () => {
     return <p>Loading...</p>;
   }
   return (
-    <>
-      <div>CombatStage</div>
+    <div className="flex flex-col" style={BannerImg}>
       <Combat fight={playerActiveFight} setTarget={setTarget} />
       <CombatUi leave={leave} action={action} target={target} />
-    </>
+    </div>
   );
 };
 

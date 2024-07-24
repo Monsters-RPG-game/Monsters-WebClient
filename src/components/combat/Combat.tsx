@@ -6,10 +6,10 @@ const Combat: React.FC<{ fight: IFightEntity; setTarget: React.Dispatch<React.Se
   setTarget,
 }) => {
   return (
-    <>
+    <div className="h-[75svh]">
       <CombatTeam side="attacker" setTarget={setTarget} fight={fight} />
       <CombatTeam side="enemy" setTarget={setTarget} fight={fight} />
-    </>
+    </div>
   );
 };
 
